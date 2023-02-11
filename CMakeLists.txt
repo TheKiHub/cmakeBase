@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
 
 if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_LIST_DIR})
-    project(cppBase VERSION 1.0.0)
+    project(cmakeBase VERSION 1.0.0)
 
     # needed to create the fetch package in this repository
     set(FETCH_PACKAGE_FILES cmake/ CMakeLists.txt LICENSE)
@@ -19,13 +19,13 @@ endif ()
 #-------------------------------------------------------------------------------------------------------
 if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
     message(STATUS "Setting build type to 'RelWithDebInfo' as none was specified.")
-    set(CMAKE_BUILD_TYPE RelWithDebInfo CACHE STRING "Choose the type of build." FORCE)
+    set(CMAKE_BUILD_TYPE "RelWithDebInfo" CACHE STRING "Choose the type of build.")
     set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS
             "Debug"
             "Release"
             "MinSizeRel"
             "RelWithDebInfo")
-endif ()
+endif()
 
 #-------------------------------------------------------------------------------------------------------
 # Set some standard Flags and allow usage of newest policies possible
@@ -60,7 +60,6 @@ include(${CMAKE_CURRENT_LIST_DIR}/cmake/handleExternals.cmake)
 #-------------------------------------------------------------------------------------------------------
 # Helper functions
 #-------------------------------------------------------------------------------------------------------
-include(${CMAKE_CURRENT_LIST_DIR}/cmake/getArchType.cmake)  # get the arch type we working on, will set ${ARCH}
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/compilerWarnings.cmake)
 CPMAddPackage("gh:TheLartians/PackageProject.cmake@1.10.0") # used to make the targets installable
 
@@ -71,12 +70,12 @@ if (APPLE)
     set(CMAKE_MACOSX_RPATH ON)
 endif ()
 
-set(CMAKE_SKIP_BUILD_RPATH FALSE) # Add absolute path to all dependencies for
-set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
-set(CMAKE_INSTALL_RPATH_USE_LINK_PATH FALSE)
+set(CMAKE_SKIP_BUILD_RPATH OFF) # Add absolute path to all dependencies
+set(CMAKE_BUILD_WITH_INSTALL_RPATH OFF)
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH OFF)
 
 if (NOT SYSTEM_DIR_INSTALL)
-    set(CMAKE_INSTALL_RPATH "$ORIGIN/${ASAP_INSTALL_LIB}")
+    set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}")
 endif ()
 
 #-------------------------------------------------------------------------------------------------------
@@ -88,10 +87,11 @@ if (BASE_SETTINGS_ENABLE_IPO)
     check_ipo_supported(RESULT result OUTPUT output)
     if (result)
         set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
-        cmake_policy(SET CMP0069 NEW)
-        set(CMAKE_POLICY_DEFAULT_CMP0069 NEW)
+        if (CMAKE_POLICY_DEFAULT_CMP0069)
+            cmake_policy(SET CMP0069 NEW)
+        endif()
     else ()
-        message(SEND_ERROR "IPO is not supported: ${output}")
+        message(WARNING "IPO is enabled but not supported: ${output}")
     endif ()
 endif ()
 
@@ -102,8 +102,8 @@ CPMAddPackage(
 )
 
 #-------------------------------------------------------------------------------------------------------
-# Add custom target which only contains the files needed by other repositories
-# This will be used to create an archive which can be added as an asset in every release
+# Create a custom target that only includes the necessary files for other repositories.
+# This custom target can then be used to generate an archive that can be attached as an asset in each release.
 #-------------------------------------------------------------------------------------------------------
 if(NOT DEFINED FETCH_PACKAGE_FILES)
     set(FETCH_PACKAGE_FILES libs/ CMakeLists.txt LICENSE)
@@ -111,5 +111,6 @@ endif()
 add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/package_files.zip
         COMMAND ${CMAKE_COMMAND} -E tar c ${CMAKE_CURRENT_BINARY_DIR}/package_files.zip --format=zip -- ${FETCH_PACKAGE_FILES}
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        COMMENT "Creating package files archive"
         DEPENDS ${FETCH_PACKAGE_FILES})
 add_custom_target(create_package_files DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/package_files.zip)

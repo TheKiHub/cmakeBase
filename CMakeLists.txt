@@ -1,10 +1,7 @@
 cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
 
 if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_LIST_DIR})
-    project(cmakeBase VERSION 1.0.0)
-
-    # needed to create the fetch package in this repository
-    set(FETCH_PACKAGE_FILES cmake/ CMakeLists.txt LICENSE)
+    project(cmakeBase)
 endif ()
 
 #-------------------------------------------------------------------------------------------------------
@@ -102,15 +99,6 @@ CPMAddPackage(
 )
 
 #-------------------------------------------------------------------------------------------------------
-# Create a custom target that only includes the necessary files for other repositories.
-# This custom target can then be used to generate an archive that can be attached as an asset in each release.
+# Create a custom target that only includes the necessary files for other repositories
 #-------------------------------------------------------------------------------------------------------
-if(NOT DEFINED FETCH_PACKAGE_FILES)
-    set(FETCH_PACKAGE_FILES libs/ CMakeLists.txt LICENSE)
-endif()
-add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/package_files.zip
-        COMMAND ${CMAKE_COMMAND} -E tar c ${CMAKE_CURRENT_BINARY_DIR}/package_files.zip --format=zip -- ${FETCH_PACKAGE_FILES}
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        COMMENT "Creating package files archive"
-        DEPENDS ${FETCH_PACKAGE_FILES})
-add_custom_target(create_package_files DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/package_files.zip)
+include(${CMAKE_CURRENT_LIST_DIR}/cmake/createPackageFiles.cmake)

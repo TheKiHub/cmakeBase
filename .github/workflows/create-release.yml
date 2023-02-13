@@ -27,4 +27,4 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: build/package_files.zip
           tag: ${{ github.ref }}
-          override: true
+          overwrite: true

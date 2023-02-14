@@ -1,6 +1,6 @@
 # check if special Version is used or set the standard version
 if ("${HANDLE_EXTERNALS_VERSION}" STREQUAL "")
-    set(HANDLE_EXTERNALS_VERSION "2.5.1")
+    set(HANDLE_EXTERNALS_VERSION "2.7.0")
 endif ()
 
 # quill needs to set the CMAKE_MODULE_PATH which don't work with CPM (policy CMP0126 NEW) as a workaround we unset the module path

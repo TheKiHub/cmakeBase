@@ -1,6 +1,6 @@
 # check if special Version is used or set the standard version
 if ("${HANDLE_EXTERNALS_VERSION}" STREQUAL "")
-    set(HANDLE_EXTERNALS_VERSION "94e850fd6ff9eceb98fda3147e3ffd4781ad2dc7") # using the hash to get a specific version in docking
+    set(HANDLE_EXTERNALS_VERSION "3451843") # using the hash to get a specific version in docking
 endif ()
 
 CPMAddPackage(

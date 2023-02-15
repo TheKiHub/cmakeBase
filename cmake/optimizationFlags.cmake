@@ -18,11 +18,12 @@ macro(choose_optimization)
         _set_optimization_flags()
     elseif (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
         # for windows compiler just do the rudimentary optimization and use the cmake standard for optimization
-        if (WIN32)
-            set(CMAKE_CXX_FLAGS "/QxHost")
-        else (WIN32)
-            set(CMAKE_CXX_FLAGS "-xHost")
-        endif ()
+        # disabled for now needs more investigation, leads to problems on some windows machines
+#        if (WIN32)
+#            set(CMAKE_CXX_FLAGS "/QxHost")
+#        else (WIN32)
+#            set(CMAKE_CXX_FLAGS "-xHost")
+#        endif ()
     endif ()
 endmacro()
 

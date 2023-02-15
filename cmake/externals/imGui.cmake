@@ -26,6 +26,8 @@ if (IMGUI_ADDED)
     # turn off all kinds of warnings
     inhibit_target_warnings(${PROJECT_NAME})
 
+    target_compile_features(imGui PRIVATE cxx_constexpr)
+
     # make the headers system, targets which include it should not get warnings
     target_include_directories(${PROJECT_NAME}
             SYSTEM PUBLIC

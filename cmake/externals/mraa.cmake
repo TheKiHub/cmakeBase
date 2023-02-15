@@ -38,6 +38,7 @@ if(MRAA_USE_FIND_PACKAGE)
                 INTERFACE_INCLUDE_DIRECTORIES "${Mraa_INCLUDE_DIRS}"
                 IMPORTED_LOCATION "${Mraa_LIBRARIES}"
                 )
+        set_target_properties(mraa::mraa PROPERTIES INTERPROCEDURAL_OPTIMIZATION OFF) # don't support it
     endif ()
 else()
     # check if special Version is used or set the standard version
@@ -45,6 +46,7 @@ else()
         set(HANDLE_EXTERNALS_VERSION "8b1c549")
     endif ()
 
+    set(CMAKE_MESSAGE_LOG_LEVEL "ERROR")    # deactivate the stupid git warning message
     CPMAddPackage(
             NAME mraa
             GITHUB_REPOSITORY eclipse/mraa
@@ -57,8 +59,10 @@ else()
                 "BUILDTESTS OFF"
                 "ENABLEEXAMPLES OFF"
     )
+    set(CMAKE_MESSAGE_LOG_LEVEL "STATUS")
 
     if (mraa_ADDED)
+        set_target_properties(mraa PROPERTIES INTERPROCEDURAL_OPTIMIZATION OFF) # don't support it
         message(DEBUG "mraa ${HANDLE_EXTERNALS_VERSION} created")
     else ()
         message(WARNING "mraa ${HANDLE_EXTERNALS_VERSION} could not be created")

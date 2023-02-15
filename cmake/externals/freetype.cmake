@@ -11,6 +11,7 @@ CPMAddPackage(
 
 if (freetype_ADDED)
     add_library(Freetype::Freetype ALIAS freetype)
+    set_target_properties(freetype PROPERTIES INTERPROCEDURAL_OPTIMIZATION OFF) # don't support it
     message(DEBUG "freetype ${HANDLE_EXTERNALS_VERSION} created")
 else ()
     message(WARNING "freetype ${HANDLE_EXTERNALS_VERSION} could not be created")

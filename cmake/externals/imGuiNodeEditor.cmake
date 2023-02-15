@@ -7,6 +7,7 @@ CPMAddPackage(
         NAME imGuiNodeEditor
         GITHUB_REPOSITORY thedmd/imgui-node-editor
         GIT_TAG ${HANDLE_EXTERNALS_VERSION}
+        DOWNLOAD_ONLY
 )
 
 if (imGuiNodeEditor_ADDED)

@@ -1,0 +1,29 @@
+name: MAC build
+
+on:
+  push:
+    branches:
+      - master
+      - main
+      - githubAction_creation
+  pull_request:
+    branches:
+      - master
+      - main
+
+jobs:
+  mac-build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Install dependencies
+        run: |
+          brew update
+          brew upgrade openssl
+      - name: Build project
+        run: |
+          mkdir build
+          cd build
+          cmake -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl ../test
+          cmake --build .

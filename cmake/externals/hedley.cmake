@@ -7,6 +7,7 @@ CPMAddPackage(
         NAME hedley
         GITHUB_REPOSITORY nemequ/hedley
         GIT_TAG ${HANDLE_EXTERNALS_VERSION}
+        DOWNLOAD_ONLY
 )
 
 #  we must create the target on our own because the creator is not into modern cmake currently

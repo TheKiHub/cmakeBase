@@ -1,10 +1,12 @@
 if ("${HANDLE_EXTERNALS_VERSION}" STREQUAL "")
     set(HANDLE_EXTERNALS_VERSION "20.36.0")
 endif ()
+
 CPMAddPackage(
         NAME uSockets
         GITHUB_REPOSITORY uNetworking/uSockets
         GIT_TAG v0.8.5
+        DOWNLOAD_ONLY
 )
 
 if (uSockets_ADDED)
@@ -28,7 +30,7 @@ if (uSockets_ADDED)
             $<BUILD_INTERFACE:${uSockets_SOURCE_DIR}/src>
             )
 
-    find_package(OpenSSL REQUIRED)
+    handleExternals(NAME OpenSSL)
     target_link_libraries(${PROJECT_NAME}
             PUBLIC
                 OpenSSL::SSL
@@ -44,6 +46,7 @@ if (uSockets_ADDED)
             NAME uWebSockets
             GITHUB_REPOSITORY uNetworking/uWebSockets
             GIT_TAG v${HANDLE_EXTERNALS_VERSION}
+            DOWNLOAD_ONLY
     )
 
     if (uWebSockets_ADDED)
@@ -51,7 +54,7 @@ if (uSockets_ADDED)
 
         ADD_LIBRARY(${PROJECT_NAME} INTERFACE)
 
-        find_package(ZLIB REQUIRED)
+        handleExternals(NAME ZLIB)
         target_link_libraries(${PROJECT_NAME}
                 INTERFACE
                 ZLIB::ZLIB

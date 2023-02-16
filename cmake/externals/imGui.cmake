@@ -7,6 +7,7 @@ CPMAddPackage(
         NAME IMGUI
         GITHUB_REPOSITORY ocornut/imgui
         GIT_TAG ${HANDLE_EXTERNALS_VERSION}
+        DOWNLOAD_ONLY
 )
 
 if (IMGUI_ADDED)

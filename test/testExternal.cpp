@@ -10,7 +10,6 @@
 #include "imgui.h"
 #include "imgui_node_editor.h"
 #include "libsecret/secret.h"
-#include "mraa.h"
 #include "nlohmann/json.hpp"
 #include <Python.h>
 #include "quill/Quill.h"

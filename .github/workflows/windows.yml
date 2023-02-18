@@ -25,9 +25,6 @@ jobs:
           key: ${{ runner.os }}-cpm
       - name: Install OpenSSL
         run: choco install openssl
-      - name: Install libuv
-        run: |           
-          vcpkg install libuv:x64-windows
       - name: Build project
         run: |
           mkdir build

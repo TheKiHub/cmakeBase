@@ -38,10 +38,10 @@ if (uSockets_ADDED)
     #   - LIBUV_LIBRARIES (only if LIBUV_FOUND)
 
     # Try to find the header
-    FIND_PATH(LIBUV_INCLUDE_DIR HINTS "${LIBUV_DIR}" NAMES uv.h REQUIRED)
+    FIND_PATH(LIBUV_INCLUDE_DIR NAMES uv.h)
 
     # Try to find the library
-    FIND_LIBRARY(LIBUV_LIBRARY HINTS "${LIBUV_DIR}" NAMES uv libuv REQUIRED)
+    FIND_LIBRARY(LIBUV_LIBRARY NAMES uv libuv)
 
     # Handle the QUIETLY/REQUIRED arguments, set LIBUV_FOUND if all variables are
     # found
@@ -64,6 +64,16 @@ if (uSockets_ADDED)
                     INTERFACE_INCLUDE_DIRECTORIES "${LibUV_INCLUDE_DIRS}"
                     )
         endif()
+    else()
+        CPMAddPackage(
+                NAME libuv
+                GITHUB_REPOSITORY libuv/libuv
+                GIT_TAG v1.44.2
+                OPTIONS LIBUV_BUILD_TESTS=OFF
+        )
+        set_target_properties(uv_a PROPERTIES INTERPROCEDURAL_OPTIMIZATION OFF) # don't support it
+        set_target_properties(uv PROPERTIES INTERPROCEDURAL_OPTIMIZATION OFF) # don't support it
+        add_library(libuv ALIAS uv)
     endif()
 
     target_link_libraries(${PROJECT_NAME}

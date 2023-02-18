@@ -5,6 +5,7 @@ on:
     branches:
       - master
       - main
+      - fix_windows
   pull_request:
     branches:
       - master
@@ -26,7 +27,8 @@ jobs:
       - name: Install OpenSSL
         run: choco install openssl
       - name: Install libuv
-        run: choco install libuv --version 1.44.2
+        run: |           
+          vcpkg install libuv:x64-windows
       - name: Build project
         run: |
           mkdir build

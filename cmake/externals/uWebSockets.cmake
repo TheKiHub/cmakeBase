@@ -32,17 +32,16 @@ if (uSockets_ADDED)
 
     handleExternals(NAME OpenSSL)
 
-
     # Standard FIND_PACKAGE module for libuv, sets the following variables:
     #   - LIBUV_FOUND
     #   - LIBUV_INCLUDE_DIRS (only if LIBUV_FOUND)
     #   - LIBUV_LIBRARIES (only if LIBUV_FOUND)
 
     # Try to find the header
-    FIND_PATH(LIBUV_INCLUDE_DIR NAMES uv.h)
+    FIND_PATH(LIBUV_INCLUDE_DIR NAMES uv.h REQUIRED)
 
     # Try to find the library
-    FIND_LIBRARY(LIBUV_LIBRARY NAMES uv libuv)
+    FIND_LIBRARY(LIBUV_LIBRARY NAMES uv libuv REQUIRED)
 
     # Handle the QUIETLY/REQUIRED arguments, set LIBUV_FOUND if all variables are
     # found
@@ -56,15 +55,18 @@ if (uSockets_ADDED)
     MARK_AS_ADVANCED(LIBUV_INCLUDE_DIR LIBUV_LIBRARY)
 
     # Set standard variables
-    IF(LIBUV_FOUND)
+    if(LIBUV_FOUND)
         SET(LIBUV_INCLUDE_DIRS "${LIBUV_INCLUDE_DIR}")
         SET(LIBUV_LIBRARIES "${LIBUV_LIBRARY}")
-    ENDIF()
+        add_library(libuv INTERFACE)
+        target_include_directories(libuv SYSTEM INTERFACE ${LIBUV_INCLUDE_DIRS})
+        target_link_libraries(libuv INTERFACE ${LIBUV_LIBRARIES})
+    endif()
 
     target_link_libraries(${PROJECT_NAME}
             PUBLIC
                 OpenSSL::SSL
-                LIBUV
+                libuv
             )
 
     target_compile_definitions(${PROJECT_NAME} PUBLIC LIBUS_USE_OPENSSL WITH_LIBUV)

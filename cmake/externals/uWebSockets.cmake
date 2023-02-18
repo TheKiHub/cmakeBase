@@ -38,10 +38,10 @@ if (uSockets_ADDED)
     #   - LIBUV_LIBRARIES (only if LIBUV_FOUND)
 
     # Try to find the header
-    FIND_PATH(LIBUV_INCLUDE_DIR NAMES uv.h REQUIRED)
+    FIND_PATH(LIBUV_INCLUDE_DIR HINTS "${LIBUV_DIR}" NAMES uv.h REQUIRED)
 
     # Try to find the library
-    FIND_LIBRARY(LIBUV_LIBRARY NAMES uv libuv REQUIRED)
+    FIND_LIBRARY(LIBUV_LIBRARY HINTS "${LIBUV_DIR}" NAMES uv libuv REQUIRED)
 
     # Handle the QUIETLY/REQUIRED arguments, set LIBUV_FOUND if all variables are
     # found
@@ -54,13 +54,16 @@ if (uSockets_ADDED)
     # Hide internal variables
     MARK_AS_ADVANCED(LIBUV_INCLUDE_DIR LIBUV_LIBRARY)
 
-    # Set standard variables
-    if(LIBUV_FOUND)
-        SET(LIBUV_INCLUDE_DIRS "${LIBUV_INCLUDE_DIR}")
-        SET(LIBUV_LIBRARIES "${LIBUV_LIBRARY}")
-        add_library(libuv INTERFACE)
-        target_include_directories(libuv SYSTEM INTERFACE ${LIBUV_INCLUDE_DIRS})
-        target_link_libraries(libuv INTERFACE ${LIBUV_LIBRARIES})
+    if(LibUV_FOUND)
+        set(LibUV_INCLUDE_DIRS ${LibUV_INCLUDE_DIR})
+        set(LibUV_LIBRARIES ${LibUV_LIBRARY})
+        if(NOT TARGET libuv)
+            add_library(libuv UNKNOWN IMPORTED)
+            set_target_properties(libuv PROPERTIES
+                    IMPORTED_LOCATION "${LibUV_LIBRARY}"
+                    INTERFACE_INCLUDE_DIRECTORIES "${LibUV_INCLUDE_DIRS}"
+                    )
+        endif()
     endif()
 
     target_link_libraries(${PROJECT_NAME}

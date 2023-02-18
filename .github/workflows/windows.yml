@@ -33,5 +33,5 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake --log-level=DEBUG -DCPM_SOURCE_CACHE=~/cpm-cache ../test
+          cmake --log-level=DEBUG -DCPM_SOURCE_CACHE=~/cpm-cache -DLIBUV_DIR=C:/vcpkg/packages/libuv_x64-windows/lib ../test
           cmake --build .

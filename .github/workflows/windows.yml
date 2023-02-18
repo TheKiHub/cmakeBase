@@ -18,15 +18,15 @@ jobs:
         uses: actions/checkout@v3
       - name: Set up cache
         id: cache-cpm
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/cpm-cache
           key: ${{ runner.os }}-cpm-${{ hashFiles('**/') }}
-          restore-keys: |
-            ${{ runner.os }}-cpm-
-      - name: Build OpenSSL
-        run: |
-          choco install openssl
+          restore-keys: ${{ runner.os }}-cpm-
+      - name: Install OpenSSL
+        run: choco install openssl
+      - name: Install libuv
+        run: choco install libuv --version 1.44.2
       - name: Build project
         run: |
           mkdir build

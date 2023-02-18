@@ -73,9 +73,10 @@ message(DEBUG "Chosen CMAKE_CXX_FLAGS: ${CMAKE_CXX_FLAGS}")
 # External handling
 #-------------------------------------------------------------------------------------------------------
 # if no specific Cache is set, set same CPM cache for every project
-if (NOT DEFINED ${CPM_SOURCE_CACHE})
-    set(CPM_SOURCE_CACHE $ENV{HOME}/.cache/CPM)
-endif ()
+if (NOT CPM_SOURCE_CACHE)
+    set(CPM_SOURCE_CACHE "$ENV{HOME}/.cache/CPM")
+endif()
+message(DEBUG "CPM will use the cache: ${CPM_SOURCE_CACHE}")
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/get_cpm.cmake)
 set(CPM_USE_NAMED_CACHE_DIRECTORIES ON) # improve readability of packages names in CLion
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/handleExternals.cmake)

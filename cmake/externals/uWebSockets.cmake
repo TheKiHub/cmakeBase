@@ -36,19 +36,7 @@ if (uSockets_ADDED)
                 OpenSSL::SSL
             )
 
-    if(WIN32)   # for whatever reason windows needs libuv with basic config
-        CPMAddPackage(
-                NAME libuv
-                GITHUB_REPOSITORY libuv/libuv
-                GIT_TAG v1.44.2
-        )
-        target_link_libraries(${PROJECT_NAME}
-                PUBLIC
-                    libuv
-                )
-    endif()
-
-    target_compile_definitions(${PROJECT_NAME} PUBLIC LIBUS_USE_OPENSSL)
+    target_compile_definitions(${PROJECT_NAME} PUBLIC LIBUS_USE_OPENSSL WITH_LIBUV)
     message(DEBUG "uSockets ${HANDLE_EXTERNALS_VERSION} created")
 
     #-------------------------------------------------------------------------------------------------------

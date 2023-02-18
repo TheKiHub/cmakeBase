@@ -10,7 +10,7 @@ CPMAddPackage(
 )
 
 if (uSockets_ADDED)
-    # ImGui don't support CMake so we create our own target for bedder usage
+    # uSockets don't support CMake so we create our own target for bedder usage
     project(uSockets VERSION 0.8.5)
     AUX_SOURCE_DIRECTORY(${uSockets_SOURCE_DIR}/src SOURCES)
     AUX_SOURCE_DIRECTORY(${uSockets_SOURCE_DIR}/src/crypto SOURCES)
@@ -35,6 +35,18 @@ if (uSockets_ADDED)
             PUBLIC
                 OpenSSL::SSL
             )
+
+    if(WIN32)   # for whatever reason windows needs libuv with basic config
+        CPMAddPackage(
+                NAME libuv
+                GITHUB_REPOSITORY libuv/libuv
+                GIT_TAG v1.44.2
+        )
+        target_link_libraries(${PROJECT_NAME}
+                PUBLIC
+                    libuv
+                )
+    endif()
 
     target_compile_definitions(${PROJECT_NAME} PUBLIC LIBUS_USE_OPENSSL)
     message(DEBUG "uSockets ${HANDLE_EXTERNALS_VERSION} created")

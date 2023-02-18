@@ -1,10 +1,10 @@
 # cmakeBase
 
-build status:
 
-![linux build](https://github.com/TheKiHub/cmakeBase/actions/workflows/linux.yml/badge.svg)  
-![windows build](https://github.com/TheKiHub/cmakeBase/actions/workflows/windows.yml/badge.svg)    
-![mac build](https://github.com/TheKiHub/cmakeBase/actions/workflows/mac.yml/badge.svg)
+[![MAC build](https://github.com/TheKiHub/cmakeBase/actions/workflows/mac.yml/badge.svg)](https://github.com/TheKiHub/cmakeBase/actions/workflows/mac.yml)
+[![Linux build](https://github.com/TheKiHub/cmakeBase/actions/workflows/linux.yml/badge.svg)](https://github.com/TheKiHub/cmakeBase/actions/workflows/linux.yml)
+[![Windows build](https://github.com/TheKiHub/cmakeBase/actions/workflows/windows.yml/badge.svg)](https://github.com/TheKiHub/cmakeBase/actions/workflows/windows.yml)
+
 
 ---
 This repository serves as the central hub for all my other repositories. For more information on how I structure 

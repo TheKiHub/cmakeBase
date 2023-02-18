@@ -16,6 +16,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+      - name: Set up cache
+        id: cache-cpm
+        uses: actions/cache@v2
+        with:
+          path: ~/cpm-cache
+          key: ${{ runner.os }}-cpm-${{ hashFiles('**/') }}
+          restore-keys: |
+            ${{ runner.os }}-cpm-
       - name: Build OpenSSL
         run: |
           choco install openssl
@@ -23,5 +31,5 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake ../test
+          cmake --log-level=DEBUG -DCPM_SOURCE_CACHE=~/cpm-cache ../test
           cmake --build .

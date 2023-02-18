@@ -16,6 +16,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+      - name: Set up cache
+        id: cache-cpm
+        uses: actions/cache@v2
+        with:
+          path: ~/cpm-cache
+          key: ${{ runner.os }}-cpm-${{ hashFiles('**/') }}
+          restore-keys: |
+            ${{ runner.os }}-cpm-
       - name: Install dependencies
         run: |
           brew update
@@ -24,5 +32,5 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl ../test
+          cmake -DCPM_SOURCE_CACHE=~/cpm-cache -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl ../test
           cmake --build .

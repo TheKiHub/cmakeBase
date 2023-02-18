@@ -22,8 +22,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/cpm-cache
-          key: ${{ runner.os }}-cpm-${{ hashFiles('**/') }}
-          restore-keys: ${{ runner.os }}-cpm-
+          key: ${{ runner.os }}-cpm
       - name: Install OpenSSL
         run: choco install openssl
       - name: Install libuv

@@ -38,7 +38,7 @@ if (uSockets_ADDED)
                 libuv
             )
 
-    target_compile_definitions(${PROJECT_NAME} PUBLIC LIBUS_USE_OPENSSL=ON WITH_LIBUV=ON)
+    target_compile_definitions(${PROJECT_NAME} PUBLIC LIBUS_USE_OPENSSL=1 WITH_LIBUV=1)
     message(DEBUG "uSockets ${HANDLE_EXTERNALS_VERSION} created")
 
     #-------------------------------------------------------------------------------------------------------
@@ -73,9 +73,9 @@ if (uSockets_ADDED)
             target_link_libraries(${PROJECT_NAME}
                     INTERFACE
                     ZLIB::ZLIB)
-            target_compile_definitions(${PROJECT_NAME} INTERFACE WITH_ZLIB=ON)
+            target_compile_definitions(${PROJECT_NAME} INTERFACE WITH_ZLIB=1)
         else()
-            target_compile_definitions(${PROJECT_NAME} INTERFACE WITH_ZLIB=OFF)
+            target_compile_definitions(${PROJECT_NAME} INTERFACE WITH_ZLIB=0)
         endif()
 
         message(DEBUG "uWebSockets ${HANDLE_EXTERNALS_VERSION} created")

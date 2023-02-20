@@ -5,7 +5,6 @@ on:
     branches:
       - master
       - main
-      - fix_windows
   pull_request:
     branches:
       - master
@@ -29,5 +28,5 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake --log-level=DEBUG -DLIBUV_DIR=C:/vcpkg/packages/libuv_x64-windows/share/libuv/ ../test
+          cmake -DCPM_SOURCE_CACHE=~/cpm-cache  ../test
           cmake --build .

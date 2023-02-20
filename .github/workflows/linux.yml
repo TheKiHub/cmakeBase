@@ -16,6 +16,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+      - name: Set up cache
+        id: cache-cpm
+        uses: actions/cache@v3
+        with:
+          path: ~/cpm-cache
+          key: ${{ runner.os }}-cpm
       - name: Install dependencies
         run: |
           sudo apt update
@@ -24,5 +30,5 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake ../test
+          cmake -DCPM_SOURCE_CACHE=~/cpm-cache ../test
           cmake --build .

@@ -3,7 +3,7 @@
 option(MRAA_USE_FIND_PACKAGE "Use find package to find mraa, needs to be installed on the platform" OFF)
 
 if(MRAA_USE_FIND_PACKAGE)
-    find_package(PkgConfig)
+    find_package(PkgConfig REQUIRED)
     pkg_check_modules(MRAA REQUIRED mraa)
 
     find_path(Mraa_INCLUDE_DIR

@@ -37,11 +37,6 @@ if(NOT TARGET imGuiNodeEditor)
     message(FATAL_ERROR "External was not created")
 endif()
 
-handleExternals(NAME libsecret)
-if(NOT TARGET libsecret)
-    message(FATAL_ERROR "External was not created")
-endif()
-
 if(${ARCH} STREQUAL ("aarch64" OR "arm"))
     handleExternals(NAME mraa)
     if(NOT TARGET mraa)

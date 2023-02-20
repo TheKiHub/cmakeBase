@@ -56,7 +56,7 @@ if (IMGUI_ADDED)
             INCLUDE_HEADER_PATTERN "*.h"
             VERSION_HEADER "${VERSION_HEADER_LOCATION}"
             COMPATIBILITY SameMajorVersion
-            DEPENDENCIES "glfw 3.3"
+            DEPENDENCIES "glfw3"
     )
     message(DEBUG "IMGUI ${HANDLE_EXTERNALS_VERSION} created")
 else ()

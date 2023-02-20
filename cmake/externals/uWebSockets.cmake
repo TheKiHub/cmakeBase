@@ -73,9 +73,9 @@ if (uSockets_ADDED)
             target_link_libraries(${PROJECT_NAME}
                     INTERFACE
                     ZLIB::ZLIB)
-            target_compile_definitions(${PROJECT_NAME} INTERFACE WITH_ZLIB=1)
+            target_compile_definitions(${PROJECT_NAME} INTERFACE UWS_NO_ZLIB=0)
         else()
-            target_compile_definitions(${PROJECT_NAME} INTERFACE WITH_ZLIB=0)
+            target_compile_definitions(${PROJECT_NAME} INTERFACE UWS_NO_ZLIB=1)
         endif()
 
         message(DEBUG "uWebSockets ${HANDLE_EXTERNALS_VERSION} created")

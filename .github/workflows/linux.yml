@@ -12,7 +12,16 @@ on:
 
 jobs:
   linux-build:
+    name: linux.${{ matrix.compiler.compiler }}.${{ matrix.build_type }}
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        build_type: [ Release , Debug ]
+        compiler:
+          - { compiler: GNU,  CC: gcc,   CXX: g++     }
+          - { compiler: LLVM, CC: clang, CXX: clang++ }
+
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -27,8 +36,11 @@ jobs:
           sudo apt update
           sudo apt install libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libxext-dev libgl1-mesa-dev
       - name: Build project
+        env:
+          CC: ${{ matrix.compiler.CC }}
+          CXX: ${{ matrix.compiler.CXX }}
         run: |
           mkdir build
           cd build
-          cmake -DCPM_SOURCE_CACHE=~/cpm-cache ../test
+          cmake -DCPM_SOURCE_CACHE=~/cpm-cache -DCMAKE_BUILD_TYPE=${{ matrix.compiler.build_type }} ../test
           cmake --build .

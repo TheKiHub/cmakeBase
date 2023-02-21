@@ -21,7 +21,7 @@ if(NOT DEFINED FETCH_PACKAGE_FILES)
 endif()
 
 if(NOT FETCH_PACKAGE_FILES)
-    message(WARNING "You try to create a fetch package without any files, check your FETCH_PACKAGE_FILES")
+    message(WARNING "No files specified for FetchContent package. Please check the FETCH_PACKAGE_FILES variable")
 else()
     add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/package_files.zip
             COMMAND ${CMAKE_COMMAND} -E tar c ${CMAKE_CURRENT_BINARY_DIR}/package_files.zip --format=zip -- ${FETCH_PACKAGE_FILES}

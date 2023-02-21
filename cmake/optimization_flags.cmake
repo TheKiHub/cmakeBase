@@ -2,11 +2,12 @@
 # Depending on the compiler we do our best to choose the optimization flags
 # Windows is not really supported, because it's not used by me and has its own weird behavior
 #-------------------------------------------------------------------------------------------------------
-macro(choose_optimization)
+function(choose_optimization)
+    set(CHOSEN_CMAKE_CXX_FLAGS "" CACHE INTERNAL "CHOSEN_CMAKE_CXX_FLAGS")
     if (CMAKE_CXX_COMPILER_ID MATCHES "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
         if (CMAKE_SYSTEM_PROCESSOR MATCHES “BCM28|armv7”)
             # we are on a raspberry pi like architecture
-            set(CMAKE_CXX_FLAGS "-march=armv8-a+crc -mcpu=cortex-a53 -mfpu=neon-fp-armv8")
+            set(CHOSEN_CMAKE_CXX_FLAGS "-march=armv8-a+crc -mcpu=cortex-a53 -mfpu=neon-fp-armv8")
         else ()
             # processor unknown try out what can be used and set it
             _set_cpu_optimization()
@@ -19,13 +20,22 @@ macro(choose_optimization)
     elseif (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
         # for windows compiler just do the rudimentary optimization and use the cmake standard for optimization
         # disabled for now needs more investigation, leads to problems on some windows machines
-#        if (WIN32)
-#            set(CMAKE_CXX_FLAGS "/QxHost")
-#        else (WIN32)
-#            set(CMAKE_CXX_FLAGS "-xHost")
-#        endif ()
+        if (WIN32)
+            set(CHOSEN_CMAKE_CXX_FLAGS "/QxHost")
+        else (WIN32)
+            set(CHOSEN_CMAKE_CXX_FLAGS "-xHost")
+        endif ()
     endif ()
-endmacro()
+    set(CHOSEN_CMAKE_CXX_FLAGS ${CHOSEN_CMAKE_CXX_FLAGS} CACHE INTERNAL "CHOSEN_CMAKE_CXX_FLAGS")
+    message(STATUS "Selected C++ compiler flags: ${CHOSEN_CMAKE_CXX_FLAGS}")
+    message(STATUS "Configured C++ compiler flags for Release build: ${CMAKE_CXX_FLAGS_RELEASE}")
+endfunction()
+
+
+function(set_choose_optimization_for_target TARGET_NAME)
+    target_compile_options(${TARGET_NAME} PRIVATE $<$<COMPILE_LANGUAGE:CXX>:${CHOSEN_CMAKE_CXX_FLAGS}>)
+endfunction()
+
 
 #-------------------------------------------------------------------------------------------------------
 # If the arch type is not set,  it is set to "native" which let's the compiler try to find it out
@@ -67,18 +77,18 @@ macro(_set_cpu_optimization)
     #-------------------------------------------------------------------------------------------------------
     # Set the chosen flags
     #-------------------------------------------------------------------------------------------------------
-    set(CMAKE_CXX_FLAGS "")
+    set(CHOSEN_CMAKE_CXX_FLAGS)
 
     if(BASE_OPTIMIZATION_INSTRUCTIONS_FOR_ARCHITECTURE)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=${BASE_OPTIMIZATION_MARCH}")
+        set(CHOSEN_CMAKE_CXX_FLAGS "${CHOSEN_CMAKE_CXX_FLAGS}-march=${BASE_OPTIMIZATION_MARCH};")
     endif()
 
     if(BASE_OPTIMIZATION_TUNE_FOR_ARCHITECTURE)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mtune=${BASE_OPTIMIZATION_TUNE}")
+        set(CHOSEN_CMAKE_CXX_FLAGS "${CHOSEN_CMAKE_CXX_FLAGS}-mtune=${BASE_OPTIMIZATION_TUNE};")
     endif()
 
     if(BASE_OPTIMIZATION_TARGET_ARCHITECTURE)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mcpu=${BASE_OPTIMIZATION_MCPU}")
+        set(CHOSEN_CMAKE_CXX_FLAGS "${CHOSEN_CMAKE_CXX_FLAGS}-mcpu=${BASE_OPTIMIZATION_MCPU};")
     endif()
 endmacro()
 
@@ -89,17 +99,17 @@ macro(_add_power_architecture_optimization)
     include(CheckCXXCompilerFlag)
     check_cxx_compiler_flag("-maltivec -Werror" COMPILER_SUPPORTS_MALTIVEC)
     if(COMPILER_SUPPORTS_MALTIVEC)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -maltivec")
+        set(CHOSEN_CMAKE_CXX_FLAGS "${CHOSEN_CMAKE_CXX_FLAGS}-maltivec;")
     endif()
 
     check_cxx_compiler_flag("-mabi=altivec -Werror" COMPILER_SUPPORTS_MABI_ALTIVEC)
     if(COMPILER_SUPPORTS_MABI_ALTIVEC)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mabi=altivec")
+        set(CHOSEN_CMAKE_CXX_FLAGS "${CHOSEN_CMAKE_CXX_FLAGS}-mabi=altivec;")
     endif()
 
     check_cxx_compiler_flag("-mvsx -Werror" COMPILER_SUPPORTS_MVSX)
     if(COMPILER_SUPPORTS_MVSX)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mvsx")
+        set(CHOSEN_CMAKE_CXX_FLAGS "${CHOSEN_CMAKE_CXX_FLAGS}-mvsx;")
     endif()
 endmacro()
 
@@ -125,7 +135,7 @@ macro(_check_neon)
                     HAS_NEON
             )
             if(HAS_NEON)
-                set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mfpu=neon -ftree-vectorize -mfloat-abi=hard")
+                set(CHOSEN_CMAKE_CXX_FLAGS "${CHOSEN_CMAKE_CXX_FLAGS}-mfpu=neon;-ftree-vectorize;-mfloat-abi=hard;")
             endif()
         endif()
     endif()

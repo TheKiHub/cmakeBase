@@ -78,6 +78,6 @@ function(set_target_warnings TARGET_NAME)
         message(DEBUG "No compiler warnings set for '${CMAKE_CXX_COMPILER_ID}' compiler.")
     endif ()
 
-    message(DEBUG "Set warning flags for '${TARGET_NAME}'")
+    message(DEBUG "Set warning flags for '${TARGET_NAME}' to ${PROJECT_WARNINGS}")
     target_compile_options(${TARGET_NAME} PRIVATE $<$<COMPILE_LANGUAGE:CXX>:${PROJECT_WARNINGS}>)
 endfunction()

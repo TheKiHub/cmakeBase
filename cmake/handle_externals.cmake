@@ -6,7 +6,7 @@ function(handleExternals)
     # make sure we don't have too many arguments currently we can have the Name and Version with one value
     # can't be done if we get multiValueArgs
     if(${ARGC} GREATER 4 OR ${ARGC} LESS 2)
-        message(ERROR "Wrong number of arguments. The form is: NAME <externalVersion> [optional]VERSION <specialVersion>")
+        message(FATAL_ERROR "Wrong number of arguments. The form is: NAME <externalVersion> [optional]VERSION <specialVersion>")
     endif()
 
     # if target is already there return

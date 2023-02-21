@@ -12,7 +12,11 @@ on:
 
 jobs:
   windows-build:
+    name: windows.${{ matrix.build_type }}
     runs-on: windows-latest
+    strategy:
+      matrix:
+        build_type: [ Release , Debug ]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -21,12 +25,12 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/cpm-cache
-          key: ${{ runner.os }}-cpm
+          key: ${{ github.workflow }}-cpm-modules-${{ hashFiles('**/CMakeLists.txt', '**/*.cmake') }}
       - name: Install OpenSSL
         run: choco install openssl
       - name: Build project
         run: |
           mkdir build
           cd build
-          cmake -DCPM_SOURCE_CACHE=~/cpm-cache  ../test
+          cmake -DCPM_SOURCE_CACHE=~/cpm-cache  -DCMAKE_BUILD_TYPE=${{ matrix.compiler.build_type }} ../test
           cmake --build .

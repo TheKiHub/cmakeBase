@@ -113,3 +113,5 @@ target_link_libraries(testExternal
             tomlplusplus_tomlplusplus
             uWebSockets
         )
+set_choose_optimization_for_target(testExternal)
+set_target_warnings(testExternal)

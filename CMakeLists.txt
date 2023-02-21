@@ -56,12 +56,12 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)   # Generate compile_commands.json for cla
 #-------------------------------------------------------------------------------------------------------
 # Set the Arch variable to the current architecture for easier usage
 #-------------------------------------------------------------------------------------------------------
-include(${CMAKE_CURRENT_LIST_DIR}/cmake/getArchType.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/cmake/get_arch_type.cmake)
 
 #-------------------------------------------------------------------------------------------------------
 # Optimization flag handling
 #-------------------------------------------------------------------------------------------------------
-include(${CMAKE_CURRENT_LIST_DIR}/cmake/optimizationFlags.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/cmake/optimization_flags.cmake)
 choose_optimization()
 
 #-------------------------------------------------------------------------------------------------------
@@ -74,7 +74,7 @@ endif()
 message(DEBUG "CPM will use the cache: ${CPM_SOURCE_CACHE}")
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/get_cpm.cmake)
 set(CPM_USE_NAMED_CACHE_DIRECTORIES ON) # improve readability of packages names
-include(${CMAKE_CURRENT_LIST_DIR}/cmake/handleExternals.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/cmake/handle_externals.cmake)
 
 #-------------------------------------------------------------------------------------------------------
 # RPATH handling
@@ -94,7 +94,7 @@ endif ()
 #-------------------------------------------------------------------------------------------------------
 # Helper functions
 #-------------------------------------------------------------------------------------------------------
-include(${CMAKE_CURRENT_LIST_DIR}/cmake/compilerWarnings.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/cmake/compiler_warnings.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/faster_development.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/cmake/createPackageFiles.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/cmake/create_package_files.cmake)
 CPMAddPackage("gh:TheLartians/PackageProject.cmake@1.10.0") # used to make the targets installable

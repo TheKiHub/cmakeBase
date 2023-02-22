@@ -32,7 +32,7 @@ function(choose_optimization)
 endfunction()
 
 
-function(set_choose_optimization_for_target TARGET_NAME)
+function(set_target_cpp_compiler_flags TARGET_NAME)
     target_compile_options(${TARGET_NAME} PRIVATE $<$<COMPILE_LANGUAGE:CXX>:${CHOSEN_CMAKE_CXX_FLAGS}>)
 endfunction()
 

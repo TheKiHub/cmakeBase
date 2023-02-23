@@ -11,7 +11,7 @@ function(choose_optimization)
         else ()
             # processor unknown try out what can be used and set it
             _set_cpu_optimization()
-            if (NOT ${ARCH} MATCHES “aarch64”)   #Advanced SIMD is mandatory for AArch64
+            if (NOT "${ARCH}" STREQUAL "aarch64")   #Advanced SIMD is mandatory for AArch64
                 _check_neon()
             endif()
             _add_power_architecture_optimization()

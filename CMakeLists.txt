@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16...3.22 FATAL_ERROR)
 
 if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_LIST_DIR})
-    project(cmakeBase)
+    project(cmakeBase VERSION 0.3.2)
 endif ()
 
 #-------------------------------------------------------------------------------------------------------

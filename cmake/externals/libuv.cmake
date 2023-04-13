@@ -1,3 +1,9 @@
+# check if special Version is used or set the standard version
+if ("${HANDLE_EXTERNALS_VERSION}" STREQUAL "")
+    set(HANDLE_EXTERNALS_VERSION "1.44.2")
+endif ()
+
+
 # Standard FIND_PACKAGE module for libuv, sets the following variables:
 #   - LIBUV_FOUND
 #   - LIBUV_INCLUDE_DIRS (only if LIBUV_FOUND)
@@ -20,7 +26,8 @@ FIND_PACKAGE_HANDLE_STANDARD_ARGS(LIBUV
 # Hide internal variables
 MARK_AS_ADVANCED(LIBUV_INCLUDE_DIR LIBUV_LIBRARY)
 
-if(LibUV_FOUND)
+#TODO check if found version is the right one
+if(LIBUV_FOUND)
     set(LibUV_INCLUDE_DIRS ${LibUV_INCLUDE_DIR})
     set(LibUV_LIBRARIES ${LibUV_LIBRARY})
     if(NOT TARGET libuv)
@@ -34,7 +41,7 @@ else()
     CPMAddPackage(
             NAME libuv
             GITHUB_REPOSITORY libuv/libuv
-            GIT_TAG v1.44.2
+            GIT_TAG v${HANDLE_EXTERNALS_VERSION}
             OPTIONS LIBUV_BUILD_TESTS=OFF
     )
     set_target_properties(uv_a PROPERTIES INTERPROCEDURAL_OPTIMIZATION OFF) # don't support it

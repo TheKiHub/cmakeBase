@@ -1,16 +1,17 @@
 #-------------------------------------------------------------------------------------------------------
 # Optional Speedups
 #-------------------------------------------------------------------------------------------------------
-option(BASE_SETTINGS_ENABLE_IPO "Enable Interprocedural Optimization, aka Link Time Optimization (LTO)" ON)
-if (BASE_SETTINGS_ENABLE_IPO)
-    include(CheckIPOSupported)
-    check_ipo_supported(RESULT result OUTPUT output)
-    if (result)
+include(CheckIPOSupported)
+check_ipo_supported(RESULT result OUTPUT output)
+if (result)
+    option(BASE_SETTINGS_ENABLE_IPO "Enable Interprocedural Optimization, aka Link Time Optimization (LTO)" ON)
+    if(BASE_SETTINGS_ENABLE_IPO)
         set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
         set(CMAKE_POLICY_DEFAULT_CMP0069 NEW)
-    else ()
-        message(WARNING "IPO is enabled but not supported: ${output}")
-    endif ()
+        message(STATUS "Using Interprocedural Optimization (LTO)")
+    endif()
+else ()
+    message(DEBUG "IPO is not supported: ${output}")
 endif ()
 
 CPMAddPackage(
@@ -28,7 +29,6 @@ if (UNIX AND NOT APPLE)
         list(GET VERSION_LIST 0 CLANG_VERSION_MAJOR) #extract major compiler version
 
         find_program(LLD_PROGRAM_MATCH_VER lld-${CLANG_VERSION_MAJOR}) #search for lld-13 when clang 13.x.x is used
-
         if (LLD_PROGRAM_MATCH_VER) #lld matching compiler version
             option(USE_LDD_LINKER "The ldd linker will be used instead of the default linker" ON)
             if(USE_LDD_LINKER)
@@ -50,11 +50,11 @@ if (UNIX AND NOT APPLE)
         if (GNU_GOLD_PROGRAM)
             option(USE_GOLD_LINKER "The gnu gold linker will be used instead of the default linker" ON)
             if(USE_GOLD_LINKER)
-                message(STATUS "Set linker to GNU gold: ${GNU_GOLD_PROGRAM}, using threads: ${HOST_PROC_COUNT}")
-                add_link_options("-fuse-ld=gold;LINKER:--threads,--thread-count=${HOST_PROC_COUNT}")
+                MATH(EXPR PROS_COUNT ${HOST_PROC_COUNT}/2)
+                message(STATUS "Set linker to GNU gold: ${GNU_GOLD_PROGRAM}, using threads: ${PROS_COUNT}")
+                add_link_options("-fuse-ld=gold;LINKER:--threads,--thread-count=${PROS_COUNT}")
+                unset(PROS_COUNT)
             endif()
-        else()
-            message(WARNING "To enable the faster gold linker for GCC, consider installing 'binutils'. Note that you can disable this message by setting the option USE_LD_GOLD to OFF")
         endif()
     endif()
 endif()

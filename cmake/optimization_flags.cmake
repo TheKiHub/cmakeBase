@@ -156,7 +156,4 @@ macro(_set_optimization_flags)
         set(CMAKE_CXX_FLAGS_RELEASE "-O3")
         set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O3 -g")
     endif()
-
-    # just to be sure the debug definition is still there after all the flag handling
-    add_definitions(-DNDEBUG)
 endmacro()

@@ -46,23 +46,40 @@ else()
         set(HANDLE_EXTERNALS_VERSION "8b1c549")
     endif ()
 
+    set(CMAKE_POLICY_BUFFER ${CMAKE_POLICY_DEFAULT_CMP0048})
+    set(CMAKE_POLICY_DEFAULT_CMP0048 NEW) # deactivate PROJECT_VERSION warnings
     set(CMAKE_MESSAGE_LOG_LEVEL "ERROR")    # deactivate the stupid git warning message
     CPMAddPackage(
             NAME mraa
             GITHUB_REPOSITORY eclipse/mraa
             GIT_TAG ${HANDLE_EXTERNALS_VERSION}
             OPTIONS
-                "BUILDSWIG OFF"
-                "BUILDSWIGPYTHON OFF"
-                "JSONPLAT OFF"
-                "INSTALLTOOLS OFF"
-                "BUILDTESTS OFF"
-                "ENABLEEXAMPLES OFF"
+            "BUILDSWIG OFF"
+            "BUILDSWIGPYTHON OFF"
+            "JSONPLAT OFF"
+            "INSTALLTOOLS OFF"
+            "BUILDTESTS OFF"
+            "ENABLEEXAMPLES OFF"
     )
     set(CMAKE_MESSAGE_LOG_LEVEL "STATUS")
+    set(CMAKE_POLICY_DEFAULT_CMP0048 ${CMAKE_POLICY_BUFFER}) # revert the policy change
 
     if (mraa_ADDED)
         set_target_properties(mraa PROPERTIES INTERPROCEDURAL_OPTIMIZATION OFF) # don't support it
+
+        get_property(MRAA_BINARY_DIR TARGET mraa PROPERTY BINARY_DIR)
+        string(TOLOWER mraa/version.h VERSION_HEADER_LOCATION)
+        packageProject(
+                NAME mraa
+                VERSION ${HANDLE_EXTERNALS_VERSION}
+                BINARY_DIR ${MRAA_BINARY_DIR}
+                INCLUDE_DIR ${mraa_SOURCE_DIR}
+                INCLUDE_DESTINATION include/mraa-${HANDLE_EXTERNALS_VERSION}
+                INCLUDE_HEADER_PATTERN "*.h"
+                VERSION_HEADER "${VERSION_HEADER_LOCATION}"
+                COMPATIBILITY SameMajorVersion
+                DEPENDENCIES ""
+        )
         message(DEBUG "mraa ${HANDLE_EXTERNALS_VERSION} created")
     else ()
         message(WARNING "mraa ${HANDLE_EXTERNALS_VERSION} could not be created")

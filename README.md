@@ -51,4 +51,5 @@ sudo make install
 cd ~
 rm -rf ~/temp_dir
 sudo ln -s /usr/local/share/cmake-3.26/bin/cmake /usr/bin/cmake
+hash -r 
 ```

@@ -25,8 +25,21 @@ if (quill_ADDED)
             $<INSTALL_INTERFACE:include>
             PRIVATE
             ${quill_SOURCE_DIR}/quill)
-    target_compile_features(quill PUBLIC cxx_std_17)
-    message(DEBUG "quill ${HANDLE_EXTERNALS_VERSION} created")
+
+    option(QUILL_REMOVE_LOW_SEVERITY_LOGS_RELEASE_ONLY "Configure Quill to remove log commands with severity lower than 'info' in release mode" ON)
+    if(QUILL_REMOVE_LOW_SEVERITY_LOGS_RELEASE_ONLY)
+        # Configure Quill to remove log commands with severity lower than "info" in release mode.
+        # This will improve performance and result in smaller binary sizes.
+        # Additionally, debugLog may contain sensitive information like passwords,
+        # which would be saved in plaintext in the log file.
+        # It's important to have this configuration active for all targets created with Quill. Since global flags are not
+        # recommended, we define it here. However, if you want to use a different behavior for a specific target, you can
+        # override the QUILL_ACTIVE_LOG_LEVEL.
+        target_compile_options(quill PUBLIC "$<$<CONFIG:RELEASE>:-DQUILL_ACTIVE_LOG_LEVEL=QUILL_LOG_LEVEL_INFO>")
+        message(DEBUG "quill ${HANDLE_EXTERNALS_VERSION} with release features created")
+    else ()
+        message(DEBUG "quill ${HANDLE_EXTERNALS_VERSION} created")
+    endif ()
 else ()
     message(WARNING "quill ${HANDLE_EXTERNALS_VERSION} could not be created")
 endif ()

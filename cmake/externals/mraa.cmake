@@ -1,8 +1,8 @@
 # mraa don't work on every platform, some platforms (like radxa zero) have their own implementation which we can
 # install and then use with findPackage
-option(MRAA_USE_FIND_PACKAGE "Use find package to find mraa, needs to be installed on the platform" OFF)
+option(IGNORE_SYSTEM_LIBRARY_MRAA "Ignore the system-installed mraa library" OFF)
 
-if(MRAA_USE_FIND_PACKAGE)
+if(NOT IGNORE_SYSTEM_LIBRARY_MRAA)
     find_package(PkgConfig REQUIRED)
     pkg_check_modules(MRAA REQUIRED mraa)
 
@@ -26,19 +26,19 @@ if(MRAA_USE_FIND_PACKAGE)
             REQUIRED Mraa_LIBRARY
             VERSION_VAR Mraa_VERSION
             )
+endif ()
 
-    if (Mraa_FOUND)
-        set(Mraa_INCLUDE_DIRS {Mraa_INCLUDE_DIR})
-        set(Mraa_LIBRARIES {Mraa_LIBRARY})
-    endif ()
-
-    if (Mraa_FOUND AND NOT TARGET mraa::mraa)
+if (Mraa_FOUND)
+    set(Mraa_INCLUDE_DIRS {Mraa_INCLUDE_DIR})
+    set(Mraa_LIBRARIES {Mraa_LIBRARY})
+    if (NOT TARGET mraa::mraa)
         add_library(mraa::mraa UNKNOWN IMPORTED)
         set_target_properties(mraa::mraa PROPERTIES
                 INTERFACE_INCLUDE_DIRECTORIES "${Mraa_INCLUDE_DIRS}"
                 IMPORTED_LOCATION "${Mraa_LIBRARIES}"
                 )
         set_target_properties(mraa::mraa PROPERTIES INTERPROCEDURAL_OPTIMIZATION OFF) # don't support it
+        message(STATUS "Using mraa library installed on this system")
     endif ()
 else()
     # check if special Version is used or set the standard version

@@ -8,23 +8,21 @@ endif ()
 # Set the c++ standard which should be used based on what is supported
 #-------------------------------------------------------------------------------------------------------
 if ("cxx_std_20" IN_LIST CMAKE_CXX_COMPILE_FEATURES)
-    set(CMAKE_CXX_STANDARD 20)
-    set(CMAKE_CXX_STANDARD_REQUIRED ON)
-    set(CMAKE_CXX_EXTENSIONS OFF)
+    set(CXX_STANDARD 20)
 elseif ("cxx_std_17" IN_LIST CMAKE_CXX_COMPILE_FEATURES)
-    set(CMAKE_CXX_STANDARD 17)
-    set(CMAKE_CXX_STANDARD_REQUIRED ON)
-    set(CMAKE_CXX_EXTENSIONS OFF)
+    set(CXX_STANDARD 17)
 elseif ("cxx_std_14" IN_LIST CMAKE_CXX_COMPILE_FEATURES)
-    set(CMAKE_CXX_STANDARD 14)
-    set(CMAKE_CXX_STANDARD_REQUIRED ON)
-    set(CMAKE_CXX_EXTENSIONS OFF)
+    set(CXX_STANDARD 14)
 elseif ("cxx_std_11" IN_LIST CMAKE_CXX_COMPILE_FEATURES)
-    set(CMAKE_CXX_STANDARD 11)
+    set(CXX_STANDARD 11)
+endif ()
+
+if (DEFINED CXX_STANDARD)
+    set(CMAKE_CXX_STANDARD ${CXX_STANDARD})
     set(CMAKE_CXX_STANDARD_REQUIRED ON)
     set(CMAKE_CXX_EXTENSIONS OFF)
+    message(STATUS "Configuring C++ standard: ${CXX_STANDARD}")
 endif ()
-message(STATUS "Configuring C++ standard: ${CMAKE_CXX_STANDARD}")
 
 #-------------------------------------------------------------------------------------------------------
 # Disable in-source builds to prevent source tree corruption
@@ -97,4 +95,4 @@ endif ()
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/compiler_warnings.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/faster_development.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/create_package_files.cmake)
-CPMAddPackage("gh:TheLartians/PackageProject.cmake@1.10.0") # used to make the targets installable
+CPMAddPackage("gh:TheLartians/PackageProject.cmake@1.11.0") # used to make the targets installable

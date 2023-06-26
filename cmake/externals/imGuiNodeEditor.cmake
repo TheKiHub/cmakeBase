@@ -1,6 +1,8 @@
 # check if special Version is used or set the standard version
 if ("${HANDLE_EXTERNALS_VERSION}" STREQUAL "")
-    set(HANDLE_EXTERNALS_VERSION "99ec923a39062f556ec7676fb9ba6d302d109f76")
+    set(HANDLE_EXTERNALS_VERSION "190757e")
+    message(WARNING "imGuiNodeEditor/imgui_extra_math.inl:37:22 function needs to be removed redefinition, pull request
+    fixing this issue was not excepted in this version and versions before are not compatible with new ImGui extra math")
 endif ()
 
 CPMAddPackage(

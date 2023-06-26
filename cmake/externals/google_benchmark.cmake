@@ -1,6 +1,6 @@
 # check if special Version is used or set the standard version
 if ("${HANDLE_EXTERNALS_VERSION}" STREQUAL "")
-    set(HANDLE_EXTERNALS_VERSION "1.7.1")
+    set(HANDLE_EXTERNALS_VERSION "1.8.0")
 endif ()
 
 #-------------------------------------------------------------------------------------------------------

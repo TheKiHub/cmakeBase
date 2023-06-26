@@ -32,10 +32,11 @@ if(NOT TARGET imGui)
     message(FATAL_ERROR "External was not created")
 endif()
 
-handleExternals(NAME imGuiNodeEditor)
-if(NOT TARGET imGuiNodeEditor)
-    message(FATAL_ERROR "External was not created")
-endif()
+#deactivated until node editor is fixed or PR https://github.com/thedmd/imgui-node-editor/pull/233 is accepted
+#handleExternals(NAME imGuiNodeEditor)
+#if(NOT TARGET imGuiNodeEditor)
+#    message(FATAL_ERROR "External was not created")
+#endif()
 
 if(${ARCH} STREQUAL ("aarch64" OR "arm"))
     handleExternals(NAME mraa)

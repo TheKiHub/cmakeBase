@@ -1,11 +1,17 @@
-find_package(ZLIB QUIET)
+# check if special version is used or set the standard version
+if ("${HANDLE_EXTERNALS_VERSION}" STREQUAL "")
+    set(HANDLE_EXTERNALS_VERSION "1.2.13")
+endif ()
+
+option(IGNORE_SYSTEM_LIBRARY_ZLIB "Ignore the system-installed mraa library" OFF)
+
+if(NOT IGNORE_SYSTEM_LIBRARY_ZLIB)
+    find_package(ZLIB QUIET)
+endif()
 
 # If Zlib is not found, download and build it as an external project
 if(NOT ZLIB_FOUND)
     message(STATUS "Try to install Zlib")
-    if ("${HANDLE_EXTERNALS_VERSION}" STREQUAL "")
-        set(HANDLE_EXTERNALS_VERSION "1.2.13")
-    endif ()
     set(buffer ${CMAKE_INTERPROCEDURAL_OPTIMIZATION})
     set(CMAKE_INTERPROCEDURAL_OPTIMIZATION OFF)
     set(CMAKE_POLICY_DEFAULT_CMP0048 NEW)
@@ -17,4 +23,6 @@ if(NOT ZLIB_FOUND)
     set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ${buffer})
     unset(buffer)
     add_library(ZLIB::ZLIB ALIAS zlib)
+else()
+    message(STATUS "Using ZLIB library installed on this system")
 endif()

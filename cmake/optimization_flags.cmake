@@ -28,7 +28,6 @@ function(choose_optimization)
     endif ()
     set(CHOSEN_CMAKE_CXX_FLAGS ${CHOSEN_CMAKE_CXX_FLAGS} CACHE INTERNAL "CHOSEN_CMAKE_CXX_FLAGS")
     message(STATUS "Selected C++ compiler flags: ${CHOSEN_CMAKE_CXX_FLAGS}")
-    message(STATUS "Configured C++ compiler flags for Release build: ${CMAKE_CXX_FLAGS_RELEASE}")
 endfunction()
 
 

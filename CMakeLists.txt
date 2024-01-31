@@ -96,3 +96,13 @@ include(${CMAKE_CURRENT_LIST_DIR}/cmake/compiler_warnings.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/faster_development.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/create_package_files.cmake)
 CPMAddPackage("gh:TheLartians/PackageProject.cmake@1.11.0") # used to make the targets installable
+
+#-------------------------------------------------------------------------------------------------------
+# Only include tests if this repo is not fetched and used by another repo
+#-------------------------------------------------------------------------------------------------------
+if(EXISTS test)
+    set(CMAKE_BASE_TESTS CACHE BOOL OFF)
+    if(CMAKE_BASE_TESTS)
+        add_subdirectory(test)
+    endif()
+endif()

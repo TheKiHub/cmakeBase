@@ -1,6 +1,7 @@
+# https://github.com/freetype/freetype
 # check if special Version is used or set the standard version
 if ("${HANDLE_EXTERNALS_VERSION}" STREQUAL "")
-    set(HANDLE_EXTERNALS_VERSION "VER-2-12-1")
+    set(HANDLE_EXTERNALS_VERSION "VER-2-13-2")
 endif ()
 
 CPMAddPackage(

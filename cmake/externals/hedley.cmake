@@ -1,3 +1,4 @@
+# https://github.com/nemequ/hedley
 # check if special Version is used or set the standard version
 if ("${HANDLE_EXTERNALS_VERSION}" STREQUAL "")
     set(HANDLE_EXTERNALS_VERSION "v15")

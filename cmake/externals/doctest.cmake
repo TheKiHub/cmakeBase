@@ -1,6 +1,7 @@
+# https://github.com/doctest/doctest
 # check if special Version is used or set the standard version
 if ("${HANDLE_EXTERNALS_VERSION}" STREQUAL "")
-    set(HANDLE_EXTERNALS_VERSION "2.4.9")
+    set(HANDLE_EXTERNALS_VERSION "2.4.11")
 endif ()
 
 # doctest using CMake 3.0 and gives errors about IPO so we turn it off and on after the target got created

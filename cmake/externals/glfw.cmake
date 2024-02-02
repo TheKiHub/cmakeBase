@@ -1,6 +1,7 @@
+# https://github.com/glfw/glfw
 # check if special Version is used or set the standard version
 if ("${HANDLE_EXTERNALS_VERSION}" STREQUAL "")
-    set(HANDLE_EXTERNALS_VERSION "3.3.8")
+    set(HANDLE_EXTERNALS_VERSION "3.3.9")
 endif ()
 
 CPMAddPackage(
@@ -12,6 +13,7 @@ CPMAddPackage(
         "GLFW_BUILD_EXAMPLES OFF"
         "GLFW_BULID_DOCS OFF"
 )
+
 
 if (GLFW_ADDED)
     message(DEBUG "GLFW ${HANDLE_EXTERNALS_VERSION} created")

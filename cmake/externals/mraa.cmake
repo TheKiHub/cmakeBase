@@ -1,3 +1,4 @@
+# https://github.com/eclipse/mraa
 # mraa don't work on every platform, some platforms (like radxa zero) have their own implementation which we can
 # install and then use with findPackage
 option(IGNORE_SYSTEM_LIBRARY_MRAA "Ignore the system-installed mraa library" OFF)
@@ -43,7 +44,7 @@ if (Mraa_FOUND)
 else()
     # check if special Version is used or set the standard version
     if ("${HANDLE_EXTERNALS_VERSION}" STREQUAL "")
-        set(HANDLE_EXTERNALS_VERSION "8b1c549")
+        set(HANDLE_EXTERNALS_VERSION "2.2.0")
     endif ()
 
     set(CMAKE_POLICY_BUFFER ${CMAKE_POLICY_DEFAULT_CMP0048})
@@ -52,7 +53,7 @@ else()
     CPMAddPackage(
             NAME mraa
             GITHUB_REPOSITORY eclipse/mraa
-            GIT_TAG ${HANDLE_EXTERNALS_VERSION}
+            VERSION ${HANDLE_EXTERNALS_VERSION}
             OPTIONS
             "BUILDSWIG OFF"
             "BUILDSWIGPYTHON OFF"

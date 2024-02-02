@@ -1,19 +1,20 @@
+# https://github.com/thedmd/imgui-node-editor
 # check if special Version is used or set the standard version
 if ("${HANDLE_EXTERNALS_VERSION}" STREQUAL "")
-    set(HANDLE_EXTERNALS_VERSION "190757e")
-    message(WARNING "imGuiNodeEditor/imgui_extra_math.inl:37:22 function needs to be removed redefinition, pull request
-    fixing this issue was not excepted in this version and versions before are not compatible with new ImGui extra math")
+    set(HANDLE_EXTERNALS_VERSION "0.9.3")
 endif ()
 
 CPMAddPackage(
         NAME imGuiNodeEditor
         GITHUB_REPOSITORY thedmd/imgui-node-editor
-        GIT_TAG ${HANDLE_EXTERNALS_VERSION}
+        VERSION ${HANDLE_EXTERNALS_VERSION}
         DOWNLOAD_ONLY
 )
 
 if (imGuiNodeEditor_ADDED)
-    project(imGuiNodeEditor VERSION 1.0)
+# Remove the 'v' if it exists at the beginning
+    string(REGEX REPLACE "^v(.*)" "\\1" HANDLE_EXTERNALS_VERSION ${HANDLE_EXTERNALS_VERSION})
+    project(imGuiNodeEditor VERSION ${HANDLE_EXTERNALS_VERSION})
 
     add_library(${PROJECT_NAME}
             ${imGuiNodeEditor_SOURCE_DIR}/crude_json.h

@@ -1,6 +1,7 @@
+# https://github.com/madler/zlib
 # check if special version is used or set the standard version
 if ("${HANDLE_EXTERNALS_VERSION}" STREQUAL "")
-    set(HANDLE_EXTERNALS_VERSION "1.2.13")
+    set(HANDLE_EXTERNALS_VERSION "1.3.1")
 endif ()
 
 option(IGNORE_SYSTEM_LIBRARY_ZLIB "Ignore the system-installed mraa library" OFF)
@@ -18,7 +19,7 @@ if(NOT ZLIB_FOUND)
     CPMAddPackage(
             NAME zlib
             GITHUB_REPOSITORY madler/zlib
-            GIT_TAG v${HANDLE_EXTERNALS_VERSION}
+            VERSION ${HANDLE_EXTERNALS_VERSION}
     )
     set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ${buffer})
     unset(buffer)

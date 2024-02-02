@@ -42,5 +42,5 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake -DCPM_SOURCE_CACHE=~/cpm-cache -DCMAKE_BUILD_TYPE=${{ matrix.compiler.build_type }} ../test
+          cmake -DCPM_SOURCE_CACHE=~/cpm-cache -DCMAKE_BUILD_TYPE=${{ matrix.compiler.build_type }} -DCMAKE_BASE_TESTS:BOOL=ON  ..
           cmake --build .

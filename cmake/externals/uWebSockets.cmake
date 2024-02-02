@@ -5,21 +5,13 @@ endif ()
 CPMAddPackage(
         NAME uSockets
         GITHUB_REPOSITORY uNetworking/uSockets
-<<<<<<< HEAD
         VERSION 0.8.7
-=======
-        GIT_TAG v0.8.6
->>>>>>> master
         DOWNLOAD_ONLY
 )
 
 if (uSockets_ADDED)
     # uSockets don't support CMake so we create our own target for bedder usage
-<<<<<<< HEAD
     project(uSockets VERSION 0.8.7)
-=======
-    project(uSockets VERSION 0.8.6)
->>>>>>> master
     AUX_SOURCE_DIRECTORY(${uSockets_SOURCE_DIR}/src SOURCES)
     AUX_SOURCE_DIRECTORY(${uSockets_SOURCE_DIR}/src/crypto SOURCES)
     AUX_SOURCE_DIRECTORY(${uSockets_SOURCE_DIR}/src/eventing SOURCES)

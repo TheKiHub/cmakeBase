@@ -1,12 +1,13 @@
+# https://github.com/ocornut/imgui
 # check if special Version is used or set the standard version
 if ("${HANDLE_EXTERNALS_VERSION}" STREQUAL "")
-    set(HANDLE_EXTERNALS_VERSION "6b01114") # using the hash to get a specific version in docking
+    set(HANDLE_EXTERNALS_VERSION "1.90.1") # using the hash to get a specific version in docking
 endif ()
 
 CPMAddPackage(
         NAME IMGUI
         GITHUB_REPOSITORY ocornut/imgui
-        GIT_TAG ${HANDLE_EXTERNALS_VERSION}
+        VERSION ${HANDLE_EXTERNALS_VERSION}
         DOWNLOAD_ONLY
 )
 

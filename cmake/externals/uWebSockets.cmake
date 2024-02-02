@@ -1,17 +1,17 @@
 if ("${HANDLE_EXTERNALS_VERSION}" STREQUAL "")
-    set(HANDLE_EXTERNALS_VERSION "20.44.0")
+    set(HANDLE_EXTERNALS_VERSION "20.58.0")
 endif ()
 
 CPMAddPackage(
         NAME uSockets
         GITHUB_REPOSITORY uNetworking/uSockets
-        GIT_TAG v0.8.6
+        VERSION 0.8.7
         DOWNLOAD_ONLY
 )
 
 if (uSockets_ADDED)
     # uSockets don't support CMake so we create our own target for bedder usage
-    project(uSockets VERSION 0.8.6)
+    project(uSockets VERSION 0.8.7)
     AUX_SOURCE_DIRECTORY(${uSockets_SOURCE_DIR}/src SOURCES)
     AUX_SOURCE_DIRECTORY(${uSockets_SOURCE_DIR}/src/crypto SOURCES)
     AUX_SOURCE_DIRECTORY(${uSockets_SOURCE_DIR}/src/eventing SOURCES)

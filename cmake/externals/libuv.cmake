@@ -1,6 +1,7 @@
+# https://github.com/libuv/libuv
 # check if special version is used or set the standard version
 if ("${HANDLE_EXTERNALS_VERSION}" STREQUAL "")
-    set(HANDLE_EXTERNALS_VERSION "1.45.0")
+    set(HANDLE_EXTERNALS_VERSION "1.47.0")
 endif ()
 
 option(IGNORE_SYSTEM_LIBRARY_LIBUV "Ignore the system-installed mraa library" OFF)

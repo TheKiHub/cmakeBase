@@ -1,4 +1,4 @@
-project(stbImage VERSION 2.29)
+project(stbImage VERSION 2.30)
 
 file(DOWNLOAD https://raw.githubusercontent.com/nothings/stb/master/stb_image.h ${CMAKE_CURRENT_BINARY_DIR}/stbImage/stb_image.h)
 add_library(stbImage INTERFACE)

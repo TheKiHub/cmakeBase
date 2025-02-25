@@ -31,11 +31,6 @@ if(NOT TARGET imGui)
     message(FATAL_ERROR "External was not created")
 endif()
 
-handleExternals(NAME imGuiNodeEditor)
-if(NOT TARGET imGuiNodeEditor)
-   message(FATAL_ERROR "External was not created")
-endif()
-
 if(${ARCH} STREQUAL ("aarch64" OR "arm"))
     handleExternals(NAME mraa)
     if(NOT TARGET mraa)
@@ -104,7 +99,6 @@ target_link_libraries(testExternal
             google_benchmark
             hedley
             imGui
-            imGuiNodeEditor
             libsecret
             mraa
             nlohmann_json

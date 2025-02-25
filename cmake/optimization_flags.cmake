@@ -1,6 +1,6 @@
 #-------------------------------------------------------------------------------------------------------
 # Depending on the compiler we do our best to choose the optimization flags
-# Windows is not really supported, because it's not used by me and has its own weird behavior
+# Windows is not supported, because it's not used by me and has its own weird behavior
 #-------------------------------------------------------------------------------------------------------
 function(choose_optimization)
     set(CHOSEN_CMAKE_CXX_FLAGS "" CACHE INTERNAL "CHOSEN_CMAKE_CXX_FLAGS")
@@ -18,13 +18,6 @@ function(choose_optimization)
         endif ()
         _set_optimization_flags()
     elseif (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
-        # for windows compiler just do the rudimentary optimization and use the cmake standard for optimization
-        # disabled for now needs more investigation, leads to problems on some windows machines
-        if (WIN32)
-            set(CHOSEN_CMAKE_CXX_FLAGS "/QxHost")
-        else (WIN32)
-            set(CHOSEN_CMAKE_CXX_FLAGS "-xHost")
-        endif ()
     endif ()
     set(CHOSEN_CMAKE_CXX_FLAGS ${CHOSEN_CMAKE_CXX_FLAGS} CACHE INTERNAL "CHOSEN_CMAKE_CXX_FLAGS")
     message(STATUS "Selected C++ compiler flags: ${CHOSEN_CMAKE_CXX_FLAGS}")

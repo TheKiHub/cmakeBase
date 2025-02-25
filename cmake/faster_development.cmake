@@ -17,7 +17,7 @@ endif ()
 CPMAddPackage(
         NAME Ccache.cmake
         GITHUB_REPOSITORY TheLartians/Ccache.cmake
-        VERSION 1.2.4
+        VERSION 1.2.5
 )
 
 if (UNIX AND NOT APPLE)

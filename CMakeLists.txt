@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
 
 if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_LIST_DIR})
-    project(cmakeBase VERSION 0.3.2)
+    project(cmakeBase VERSION 0.5.0)
 endif ()
 
 #-------------------------------------------------------------------------------------------------------
@@ -100,13 +100,3 @@ include(${CMAKE_CURRENT_LIST_DIR}/cmake/compiler_warnings.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/faster_development.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/create_package_files.cmake)
 CPMAddPackage("gh:TheLartians/PackageProject.cmake@1.11.0") # used to make the targets installable
-
-#-------------------------------------------------------------------------------------------------------
-# Only include tests if this repo is not fetched and used by another repo
-#-------------------------------------------------------------------------------------------------------
-if(EXISTS "${CMAKE_SOURCE_DIR}/test")
-    set(CMAKE_BASE_TESTS CACHE BOOL OFF)
-    if(CMAKE_BASE_TESTS)
-        add_subdirectory(test)
-    endif()
-endif()

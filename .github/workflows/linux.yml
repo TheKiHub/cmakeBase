@@ -34,7 +34,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libxext-dev libgl1-mesa-dev libwayland-dev libxkbcommon-x11-0
+          sudo apt install libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libxext-dev libgl1-mesa-dev libwayland-dev libxkbcommon-dev
       - name: Build project
         env:
           CC: ${{ matrix.compiler.CC }}

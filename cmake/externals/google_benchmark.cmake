@@ -1,7 +1,7 @@
 # https://github.com/google/benchmark
 # check if special Version is used or set the standard version
 if ("${HANDLE_EXTERNALS_VERSION}" STREQUAL "")
-    set(HANDLE_EXTERNALS_VERSION "1.8.3")
+    set(HANDLE_EXTERNALS_VERSION "1.9.1")
 endif ()
 
 #-------------------------------------------------------------------------------------------------------

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16...3.26 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
 
 if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_LIST_DIR})
     project(cmakeBase VERSION 0.3.2)
@@ -67,7 +67,11 @@ choose_optimization()
 #-------------------------------------------------------------------------------------------------------
 # if no specific Cache is set, set same CPM cache for every project
 if (NOT CPM_SOURCE_CACHE)
-    set(CPM_SOURCE_CACHE "$ENV{HOME}/.cache/CPM")
+    if(WIN32)
+        set(CPM_SOURCE_CACHE "$ENV{USERPROFILE}/.cache/CPM" CACHE STRING "CPM cache directory")
+    else()
+        set(CPM_SOURCE_CACHE "$ENV{HOME}/.cache/CPM" CACHE STRING "CPM cache directory")
+    endif()
 endif()
 message(DEBUG "CPM will use the cache: ${CPM_SOURCE_CACHE}")
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/get_cpm.cmake)
@@ -100,7 +104,7 @@ CPMAddPackage("gh:TheLartians/PackageProject.cmake@1.11.0") # used to make the t
 #-------------------------------------------------------------------------------------------------------
 # Only include tests if this repo is not fetched and used by another repo
 #-------------------------------------------------------------------------------------------------------
-if(EXISTS test)
+if(EXISTS "${CMAKE_SOURCE_DIR}/test")
     set(CMAKE_BASE_TESTS CACHE BOOL OFF)
     if(CMAKE_BASE_TESTS)
         add_subdirectory(test)

@@ -1,20 +1,20 @@
 if ("${HANDLE_EXTERNALS_VERSION}" STREQUAL "")
-    set(HANDLE_EXTERNALS_VERSION "20.58.0")
+    set(HANDLE_EXTERNALS_VERSION "20.74.0")
 endif ()
 
 CPMAddPackage(
         NAME uSockets
         GITHUB_REPOSITORY uNetworking/uSockets
-        VERSION 0.8.7
+        VERSION 0.8.8
         DOWNLOAD_ONLY
 )
 
 if (uSockets_ADDED)
     # uSockets don't support CMake so we create our own target for bedder usage
-    project(uSockets VERSION 0.8.7)
-    AUX_SOURCE_DIRECTORY(${uSockets_SOURCE_DIR}/src SOURCES)
-    AUX_SOURCE_DIRECTORY(${uSockets_SOURCE_DIR}/src/crypto SOURCES)
-    AUX_SOURCE_DIRECTORY(${uSockets_SOURCE_DIR}/src/eventing SOURCES)
+    project(uSockets VERSION 0.8.8)
+    AUX_SOURCE_DIRECTORY(${CPM_PACKAGE_uSockets_SOURCE_DIR}/src SOURCES)
+    AUX_SOURCE_DIRECTORY(${CPM_PACKAGE_uSockets_SOURCE_DIR}/src/crypto SOURCES)
+    AUX_SOURCE_DIRECTORY(${CPM_PACKAGE_uSockets_SOURCE_DIR}/src/eventing SOURCES)
 
     add_library(${PROJECT_NAME}
             ${SOURCES}
@@ -27,7 +27,7 @@ if (uSockets_ADDED)
     target_include_directories(${PROJECT_NAME}
             SYSTEM PUBLIC
             $<INSTALL_INTERFACE:include/${PROJECT_NAME}-${PROJECT_VERSION}>
-            $<BUILD_INTERFACE:${uSockets_SOURCE_DIR}/src>
+            $<BUILD_INTERFACE:${CPM_PACKAGE_uSockets_SOURCE_DIR}/src>
             )
 
     handleExternals(NAME OpenSSL)
@@ -65,7 +65,7 @@ if (uSockets_ADDED)
         target_include_directories(${PROJECT_NAME}
                 SYSTEM INTERFACE
                     $<INSTALL_INTERFACE:include>
-                    $<BUILD_INTERFACE:${uWebSockets_SOURCE_DIR}/src>
+                    $<BUILD_INTERFACE:${CPM_PACKAGE_uWebSockets_SOURCE_DIR}/src>
                 )
 
         if(UWEBSOCKETS_WITH_ZLIB)

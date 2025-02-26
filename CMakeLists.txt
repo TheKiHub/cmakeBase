@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
 
 if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_LIST_DIR})
-    project(cmakeBase VERSION 0.3.2)
+    project(cmakeBase VERSION 0.5.0)
 endif ()
 
 #-------------------------------------------------------------------------------------------------------
@@ -18,9 +18,9 @@ elseif ("cxx_std_11" IN_LIST CMAKE_CXX_COMPILE_FEATURES)
 endif ()
 
 if (DEFINED CXX_STANDARD)
-    set(CMAKE_CXX_STANDARD ${CXX_STANDARD})
-    set(CMAKE_CXX_STANDARD_REQUIRED ON)
-    set(CMAKE_CXX_EXTENSIONS OFF)
+    set(CMAKE_CXX_STANDARD ${CXX_STANDARD} PARENT_SCOPE)
+    set(CMAKE_CXX_STANDARD_REQUIRED ON PARENT_SCOPE)
+    set(CMAKE_CXX_EXTENSIONS OFF PARENT_SCOPE)
     message(STATUS "Configuring C++ standard: ${CXX_STANDARD}")
 endif ()
 
@@ -48,8 +48,8 @@ endif()
 # Set some standard Flags and allow usage of newest policies possible
 #-------------------------------------------------------------------------------------------------------
 cmake_policy(VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
-set(CMAKE_DEBUG_POSTFIX d)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)   # Generate compile_commands.json for clang based tools
+set(CMAKE_DEBUG_POSTFIX d PARENT_SCOPE)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON PARENT_SCOPE)   # Generate compile_commands.json for clang based tools
 
 #-------------------------------------------------------------------------------------------------------
 # Set the Arch variable to the current architecture for easier usage
@@ -75,22 +75,22 @@ if (NOT CPM_SOURCE_CACHE)
 endif()
 message(DEBUG "CPM will use the cache: ${CPM_SOURCE_CACHE}")
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/get_cpm.cmake)
-set(CPM_USE_NAMED_CACHE_DIRECTORIES ON) # improve readability of packages names
+set(CPM_USE_NAMED_CACHE_DIRECTORIES ON PARENT_SCOPE) # improve readability of packages names
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/handle_externals.cmake)
 
 #-------------------------------------------------------------------------------------------------------
 # RPATH handling
 #-------------------------------------------------------------------------------------------------------
 if (APPLE)
-    set(CMAKE_MACOSX_RPATH ON)
+    set(CMAKE_MACOSX_RPATH ON PARENT_SCOPE)
 endif ()
 
-set(CMAKE_SKIP_BUILD_RPATH OFF) # Add absolute path to all dependencies
-set(CMAKE_BUILD_WITH_INSTALL_RPATH OFF)
-set(CMAKE_INSTALL_RPATH_USE_LINK_PATH OFF)
+set(CMAKE_SKIP_BUILD_RPATH OFF PARENT_SCOPE) # Add absolute path to all dependencies
+set(CMAKE_BUILD_WITH_INSTALL_RPATH OFF PARENT_SCOPE)
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH OFF PARENT_SCOPE)
 
 if (NOT SYSTEM_DIR_INSTALL)
-    set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}")
+    set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}" PARENT_SCOPE)
 endif ()
 
 #-------------------------------------------------------------------------------------------------------
@@ -100,13 +100,3 @@ include(${CMAKE_CURRENT_LIST_DIR}/cmake/compiler_warnings.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/faster_development.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/create_package_files.cmake)
 CPMAddPackage("gh:TheLartians/PackageProject.cmake@1.11.0") # used to make the targets installable
-
-#-------------------------------------------------------------------------------------------------------
-# Only include tests if this repo is not fetched and used by another repo
-#-------------------------------------------------------------------------------------------------------
-if(EXISTS "${CMAKE_SOURCE_DIR}/test")
-    set(CMAKE_BASE_TESTS CACHE BOOL OFF)
-    if(CMAKE_BASE_TESTS)
-        add_subdirectory(test)
-    endif()
-endif()

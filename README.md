@@ -27,29 +27,5 @@ FetchContent_Declare(
         URL https://github.com/TheKiHub/cmakeBase/releases/latest/download/package_files.zip
         SOURCE_DIR cmakeBase
 )
-FetchContent_GetProperties(cmakeBase)
-if(NOT cmakeBase_POPULATED)
-    FetchContent_Populate(cmakeBase)
-    include(${CMAKE_CURRENT_BINARY_DIR}/cmakeBase/CMakeLists.txt)
-endif()
+FetchContent_MakeAvailable(cmakeBase)
  ```
-
-## Snippets
-
-``` shell
-sudo apt purge cmake -y
-version=3.26
-build=3
-mkdir ~/temp_dir
-cd ~/temp_dir
-wget https://cmake.org/files/v$version/cmake-$version.$build.tar.gz
-tar -xzvf cmake-$version.$build.tar.gz
-cd cmake-$version.$build/
-./bootstrap
-make -j$(nproc)
-sudo make install
-cd ~
-rm -rf ~/temp_dir
-sudo ln -s /usr/local/share/cmake-3.26/bin/cmake /usr/bin/cmake
-hash -r 
-```

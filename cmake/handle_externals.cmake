@@ -6,9 +6,12 @@ foreach(file ${ALL_EXTERNAL_FILES})
     get_filename_component(filename ${file} NAME_WE)
     list(APPEND file_list ${filename})
 endforeach()
+# Store the list in the parent scope so it's accessible inside functions
+set(file_list ${file_list} CACHE INTERNAL "List of all external names")
+set(ALL_EXTERNAL_FILES ${ALL_EXTERNAL_FILES} CACHE INTERNAL "List of external files")
 
 # Global variable to store information about external dependencies
-set(external_dependency_versions_and_sources "")
+set(external_dependency_versions_and_sources "" CACHE INTERNAL "List of dependency and versions")
 
 function(handleExternals)
     cmake_parse_arguments(HANDLE_EXTERNALS "" "NAME;VERSION" "" ${ARGN})

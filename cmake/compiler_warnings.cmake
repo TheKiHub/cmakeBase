@@ -3,7 +3,6 @@
 
 function(inhibit_target_warnings TARGET_NAME)
     if (CMAKE_CXX_COMPILER_ID MATCHES "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
- #       target_compile_options(${TARGET_NAME} PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-w>)
         get_target_property(TARGET_TYPE ${TARGET_NAME} TYPE)
         if(NOT TARGET_TYPE STREQUAL "INTERFACE_LIBRARY")
             target_compile_options(${TARGET_NAME} PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-w>)
@@ -13,7 +12,6 @@ function(inhibit_target_warnings TARGET_NAME)
         if(NOT TARGET_TYPE STREQUAL "INTERFACE_LIBRARY")
             target_compile_options(${TARGET_NAME} PRIVATE $<$<COMPILE_LANGUAGE:CXX>:/w>)
         endif()
-#        target_compile_options(${TARGET_NAME} PRIVATE $<$<COMPILE_LANGUAGE:CXX>:/w>)
     endif ()
 endfunction ()
 

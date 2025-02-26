@@ -31,7 +31,7 @@ if(NOT TARGET imGui)
     message(FATAL_ERROR "External was not created")
 endif()
 
-if(${ARCH} STREQUAL ("aarch64" OR "arm"))
+if(${SIMPLIFIED_CPU_ARCH_TYPE} STREQUAL ("aarch64" OR "arm"))
     handleExternals(NAME mraa)
     if(NOT TARGET mraa)
         message(FATAL_ERROR "External was not created")

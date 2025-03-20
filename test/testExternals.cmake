@@ -58,11 +58,6 @@ if(NOT TARGET quill)
     message(FATAL_ERROR "External was not created")
 endif()
 
-handleExternals(NAME refl-cpp)
-if(NOT TARGET refl-cpp)
-    message(FATAL_ERROR "External was not created")
-endif()
-
 handleExternals(NAME stbImage)
 if(NOT TARGET stbImage)
     message(FATAL_ERROR "External was not created")
@@ -88,6 +83,11 @@ if(NOT TARGET OpenSSL)
     message(FATAL_ERROR "External was not created")
 endif()
 
+handleExternals(NAME googletest)
+if(NOT (TARGET gtest_main AND TARGET gmock))
+    message(FATAL_ERROR "External was not created")
+endif()
+
 #-------------------------------------------------------------------------------------------------------
 # create a target which uses all externals to test compilation/linking
 #-------------------------------------------------------------------------------------------------------
@@ -110,6 +110,8 @@ target_link_libraries(testExternal
             Taskflow
             tomlplusplus_tomlplusplus
             uWebSockets
+            gtest_main
+            gmock
         )
 set_target_cpp_compiler_flags(testExternal)
 set_target_warnings(testExternal)

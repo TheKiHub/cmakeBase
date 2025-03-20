@@ -4,3 +4,4 @@
 
 # Ignore folders used for local testing  
 test/**/
+/build/*

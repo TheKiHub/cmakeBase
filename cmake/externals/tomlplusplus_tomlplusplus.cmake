@@ -11,16 +11,11 @@ CPMAddPackage(
 )
 
 if (tomlplusplus_tomlplusplus_ADDED)
-    # installation is only possible if this project is the main project, make it installable also when included
-    packageProject(
-            NAME tomlplusplus_tomlplusplus
-            VERSION 3.2.0
-            BINARY_DIR ${CMAKE_BINARY_DIR}/_deps/tomlplusplus_tomlplusplus-build
-            INCLUDE_DIR ${tomlplusplus_tomlplusplus_SOURCE_DIR}/include
-            INCLUDE_DESTINATION include/
-            VERSION_HEADER "tomlplusplus_tomlplusplus/version.h"
-            COMPATIBILITY SameMajorVersion
-    )
+    # turn off all kinds of warnings by including the headers as system headers
+    target_include_directories(tomlplusplus_tomlplusplus
+            SYSTEM INTERFACE
+            $<BUILD_INTERFACE:${tomlplusplus_tomlplusplus_SOURCE_DIR}/include>
+            $<INSTALL_INTERFACE:include>)
 
     message(DEBUG "tomlplusplus_tomlplusplus ${HANDLE_EXTERNALS_VERSION} created")
 else ()

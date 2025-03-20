@@ -79,6 +79,20 @@ set(CPM_USE_NAMED_CACHE_DIRECTORIES ON PARENT_SCOPE) # improve readability of pa
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/handle_externals.cmake)
 
 #-------------------------------------------------------------------------------------------------------
+# Set output directories for binaries and libraries
+#-------------------------------------------------------------------------------------------------------
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin PARENT_SCOPE)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib PARENT_SCOPE)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib PARENT_SCOPE)
+
+#-------------------------------------------------------------------------------------------------------
+# Set default installation directories
+#-------------------------------------------------------------------------------------------------------
+if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+    set(CMAKE_INSTALL_PREFIX "${CMAKE_SOURCE_DIR}/install" CACHE PATH "Default install path" FORCE)
+endif()
+
+#-------------------------------------------------------------------------------------------------------
 # RPATH handling
 #-------------------------------------------------------------------------------------------------------
 if (APPLE)
@@ -99,4 +113,4 @@ endif ()
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/compiler_warnings.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/faster_development.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/create_package_files.cmake)
-CPMAddPackage("gh:TheLartians/PackageProject.cmake@1.11.0") # used to make the targets installable
+CPMAddPackage("gh:TheLartians/PackageProject.cmake@1.13.0") # used to make the targets installable

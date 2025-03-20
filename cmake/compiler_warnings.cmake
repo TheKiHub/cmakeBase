@@ -2,21 +2,25 @@
 # https://github.com/lefticus/cppbestpractices/blob/master/02-Use_the_Tools_Available.md
 
 function(inhibit_target_warnings TARGET_NAME)
+    get_target_property(TARGET_TYPE ${TARGET_NAME} TYPE)
+    if(TARGET_TYPE STREQUAL "INTERFACE_LIBRARY")
+        message(WARNING "Can't inhibit warnings for INTERFACE_LIBRARY target '${TARGET_NAME}' because it changes the behavior of all targets that use this target")
+        return()
+    endif()
     if (CMAKE_CXX_COMPILER_ID MATCHES "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-        get_target_property(TARGET_TYPE ${TARGET_NAME} TYPE)
-        if(NOT TARGET_TYPE STREQUAL "INTERFACE_LIBRARY")
-            target_compile_options(${TARGET_NAME} PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-w>)
-        endif()
+        target_compile_options(${TARGET_NAME} PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-w>)
     elseif (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
-        get_target_property(TARGET_TYPE ${TARGET_NAME} TYPE)
-        if(NOT TARGET_TYPE STREQUAL "INTERFACE_LIBRARY")
-            target_compile_options(${TARGET_NAME} PRIVATE $<$<COMPILE_LANGUAGE:CXX>:/w>)
-        endif()
+        target_compile_options(${TARGET_NAME} PRIVATE $<$<COMPILE_LANGUAGE:CXX>:/w>)
     endif ()
 endfunction ()
 
 
 function(set_target_warnings TARGET_NAME)
+    get_target_property(TARGET_TYPE ${TARGET_NAME} TYPE)
+    if(TARGET_TYPE STREQUAL "INTERFACE_LIBRARY")
+        message(WARNING "Can't inhibit warnings for INTERFACE_LIBRARY target '${TARGET_NAME}' because it changes the behavior of all targets that use this target")
+        return()
+    endif()
     option(WARNINGS_AS_ERRORS "Treat compiler warnings as errors" FALSE)
 
     if (CMAKE_CXX_COMPILER_ID MATCHES "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")

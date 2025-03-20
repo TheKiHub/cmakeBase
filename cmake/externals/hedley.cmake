@@ -10,10 +10,9 @@ CPMAddPackage(
         GIT_TAG ${HANDLE_EXTERNALS_VERSION}
         DOWNLOAD_ONLY
 )
-message("-------------------------------------HEALY---------------------------------------------")
+
 #  we must create the target on our own because the creator is not into modern cmake currently
 if (hedley_ADDED)
-message("----------------------------------------------------------------------------------")
     add_library(hedley INTERFACE IMPORTED)
 
     target_precompile_headers(hedley INTERFACE ${hedley_SOURCE_DIR}/hedley.h)

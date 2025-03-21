@@ -82,7 +82,9 @@ else()
                 DEPENDENCIES ""
         )
         message(DEBUG "mraa ${HANDLE_EXTERNALS_VERSION} created")
-    else ()
-        message(WARNING "mraa ${HANDLE_EXTERNALS_VERSION} could not be created")
-    endif ()
+    endif()
 endif()
+
+if(NOT TARGET mraa)
+    message(WARNING "mraa ${HANDLE_EXTERNALS_VERSION} could not be created")
+endif ()

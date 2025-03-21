@@ -11,13 +11,12 @@ CPMAddPackage(
 )
 
 if (tomlplusplus_tomlplusplus_ADDED)
-    # turn off all kinds of warnings by including the headers as system headers
-    target_include_directories(tomlplusplus_tomlplusplus
-            SYSTEM INTERFACE
-            $<BUILD_INTERFACE:${tomlplusplus_tomlplusplus_SOURCE_DIR}/include>
-            $<INSTALL_INTERFACE:include>)
+    # turn off all kinds of warnings by including headers as system headers
+    include_as_systemheaders(tomlplusplus_tomlplusplus)
 
     message(DEBUG "tomlplusplus_tomlplusplus ${HANDLE_EXTERNALS_VERSION} created")
-else ()
+endif ()
+
+if(NOT TARGET tomlplusplus_tomlplusplus)
     message(WARNING "tomlplusplus_tomlplusplus ${HANDLE_EXTERNALS_VERSION} could not be created")
 endif ()

@@ -14,12 +14,12 @@ CPMAddPackage(
 )
 
 if (Taskflow_ADDED)
-    target_include_directories(Taskflow
-            SYSTEM INTERFACE
-            $<INSTALL_INTERFACE:include/>
-            $<BUILD_INTERFACE:${Taskflow_SOURCE_DIR}>
-            )
+    # turn off all kinds of warnings by including the as system headers
+    include_as_systemheaders(Taskflow)
+
     message(DEBUG "Taskflow ${HANDLE_EXTERNALS_VERSION} created")
-else ()
+endif()
+
+if(NOT TARGET Taskflow)
     message(WARNING "Taskflow ${HANDLE_EXTERNALS_VERSION} could not be created")
 endif ()

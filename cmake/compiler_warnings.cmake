@@ -3,21 +3,48 @@
 
 function(inhibit_target_warnings TARGET_NAME)
     get_target_property(TARGET_TYPE ${TARGET_NAME} TYPE)
-    if(TARGET_TYPE STREQUAL "INTERFACE_LIBRARY")
-        message(WARNING "Can't inhibit warnings for INTERFACE_LIBRARY target '${TARGET_NAME}' because it changes the behavior of all targets that use this target")
+    if(NOT (TARGET_TYPE STREQUAL "EXECUTABLE" OR
+            TARGET_TYPE STREQUAL "STATIC_LIBRARY" OR
+            TARGET_TYPE STREQUAL "SHARED_LIBRARY" OR
+            TARGET_TYPE STREQUAL "MODULE_LIBRARY" OR
+            TARGET_TYPE STREQUAL "OBJECT_LIBRARY"))
+        # Not issuing a warning because 'inhibit_target_warnings' is also used to silence external warnings.
+        # This may be called for imported system targets, where warnings should not be reported.
+        message(STATUS "Skipping warning inhibition for ${TARGET_TYPE} target '${TARGET_NAME}'")
         return()
     endif()
     if (CMAKE_CXX_COMPILER_ID MATCHES "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-        target_compile_options(${TARGET_NAME} PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-w>)
+        target_compile_options(${TARGET_NAME} PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-w> $<$<COMPILE_LANGUAGE:C>:-w>)
     elseif (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
-        target_compile_options(${TARGET_NAME} PRIVATE $<$<COMPILE_LANGUAGE:CXX>:/w>)
+        # For Microsoft compilers (MSVC), we must remove existing warning flags 
+        # (e.g., /W1, /W2, /W3, /W4, /Wall) before adding /w. 
+        # This prevents the D9025 warning: "overriding '/Wx' with '/w'".
+        
+        # Retrieve existing compile options
+        get_target_property(COMPILE_OPTIONS ${TARGET_NAME} COMPILE_OPTIONS)
+        if (NOT COMPILE_OPTIONS)
+            set(COMPILE_OPTIONS "")  # Ensure it's defined
+        endif()
+
+        # Remove existing warning level flags (/W1, /W2, /W3, /W4, /Wall)
+        foreach(WARNING_FLAG /W0 /W1 /W2 /W3 /W4 /Wall /WX -Wall)
+            string(REPLACE ${WARNING_FLAG} "" COMPILE_OPTIONS "${COMPILE_OPTIONS}")
+        endforeach()
+
+        # Apply the desired warning flag (e.g., /w to suppress all warnings)
+        set_target_properties(${TARGET_NAME} PROPERTIES COMPILE_OPTIONS "")
+        target_compile_options(${TARGET_NAME} PRIVATE $<$<COMPILE_LANGUAGE:CXX>:${COMPILE_OPTIONS} /w> $<$<COMPILE_LANGUAGE:C>:${COMPILE_OPTIONS} /w>)
     endif ()
 endfunction ()
 
 
 function(set_target_warnings TARGET_NAME)
     get_target_property(TARGET_TYPE ${TARGET_NAME} TYPE)
-    if(TARGET_TYPE STREQUAL "INTERFACE_LIBRARY")
+    if(NOT (TARGET_TYPE STREQUAL "EXECUTABLE" OR
+            TARGET_TYPE STREQUAL "STATIC_LIBRARY" OR
+            TARGET_TYPE STREQUAL "SHARED_LIBRARY" OR
+            TARGET_TYPE STREQUAL "MODULE_LIBRARY" OR
+            TARGET_TYPE STREQUAL "OBJECT_LIBRARY"))
         message(WARNING "Can't inhibit warnings for INTERFACE_LIBRARY target '${TARGET_NAME}' because it changes the behavior of all targets that use this target")
         return()
     endif()

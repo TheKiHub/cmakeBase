@@ -27,6 +27,8 @@ if (OPENSSL_FOUND)
     endif()
 
     message(DEBUG "OpenSSL ${HANDLE_EXTERNALS_VERSION} created")
-else ()
+endif()
+
+if(NOT TARGET OpenSSL)
     message(WARNING "OpenSSL ${HANDLE_EXTERNALS_VERSION} could not be created")
 endif ()

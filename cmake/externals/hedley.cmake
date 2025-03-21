@@ -24,6 +24,8 @@ if (hedley_ADDED)
             $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
     message(DEBUG "Hedley ${HANDLE_EXTERNALS_VERSION} created")
-else ()
+endif()
+
+if(NOT TARGET hedley)
     message(WARNING "Hedley ${HANDLE_EXTERNALS_VERSION} could not be created")
 endif ()

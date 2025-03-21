@@ -17,6 +17,8 @@ set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ${CMAKE_INTERPROCEDURAL_OPTIMIZATION_buff
 if (doctest_ADDED)
     set(${doctest_SOURCE_DIR} ${doctest_SOURCE_DIR} PARENT_SCOPE)
     message(DEBUG "doctest ${HANDLE_EXTERNALS_VERSION} created")
-else ()
+endif ()
+
+if(NOT TARGET doctest)
     message(WARNING "doctest ${HANDLE_EXTERNALS_VERSION} could not be created")
 endif ()

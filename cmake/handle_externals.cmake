@@ -23,7 +23,6 @@ function(handleExternals)
     endif()
 
     message(DEBUG "Try to get external ${HANDLE_EXTERNALS_NAME}")
-
     # Check if the external dependency with the same name and different version has already been processed
     foreach(entry IN LISTS external_dependency_versions_and_sources)
         string(REGEX MATCH "([^_]+)_?(.*)_(.*)" match_result ${entry})

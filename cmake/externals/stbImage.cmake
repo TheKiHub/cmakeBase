@@ -3,7 +3,7 @@ project(stbImage VERSION 2.30)
 file(DOWNLOAD https://raw.githubusercontent.com/nothings/stb/master/stb_image.h ${CMAKE_CURRENT_BINARY_DIR}/stbImage/stb_image.h)
 add_library(stbImage INTERFACE)
 
-# make the headers system, targets which include it should not get warnings
+# turn off all kinds of warnings by including the headers as system headers
 target_include_directories(stbImage
         SYSTEM INTERFACE
         $<INSTALL_INTERFACE:include/stbImage>

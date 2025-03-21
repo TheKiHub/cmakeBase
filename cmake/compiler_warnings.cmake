@@ -3,7 +3,7 @@
 
 function(inhibit_target_warnings TARGET_NAME)
     get_target_property(TARGET_TYPE ${TARGET_NAME} TYPE)
-    if(NOT TARGET_TYPE OR TARGET_TYPE STREQUAL "INTERFACE_LIBRARY" OR TARGET_TYPE STREQUAL "UTILITY" OR TARGET_TYPE STREQUAL "IMPORTED" or TARGET_TYPE STREQUAL "UNKNOWN_LIBRARY")
+    if(NOT TARGET_TYPE OR TARGET_TYPE STREQUAL "INTERFACE_LIBRARY" OR TARGET_TYPE STREQUAL "UTILITY" OR TARGET_TYPE STREQUAL "IMPORTED" OR TARGET_TYPE STREQUAL "UNKNOWN_LIBRARY")
         # Not issuing a warning because 'inhibit_target_warnings' is also used to silence external warnings.
         # This may be called for imported system targets, where warnings should not be reported.
         message(STATUS "Skipping warning inhibition for ${TARGET_TYPE} target '${TARGET_NAME}'")
@@ -36,7 +36,7 @@ endfunction ()
 
 function(set_target_warnings TARGET_NAME)
     get_target_property(TARGET_TYPE ${TARGET_NAME} TYPE)
-    if(NOT TARGET_TYPE OR TARGET_TYPE STREQUAL "INTERFACE_LIBRARY" OR TARGET_TYPE STREQUAL "UTILITY" OR TARGET_TYPE STREQUAL "IMPORTED" or TARGET_TYPE STREQUAL "UNKNOWN_LIBRARY")
+    if(NOT TARGET_TYPE OR TARGET_TYPE STREQUAL "INTERFACE_LIBRARY" OR TARGET_TYPE STREQUAL "UTILITY" OR TARGET_TYPE STREQUAL "IMPORTED" OR TARGET_TYPE STREQUAL "UNKNOWN_LIBRARY")
         message(WARNING "Can't inhibit warnings for INTERFACE_LIBRARY target '${TARGET_NAME}' because it changes the behavior of all targets that use this target")
         return()
     endif()

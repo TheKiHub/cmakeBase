@@ -8,9 +8,26 @@ function(inhibit_target_warnings TARGET_NAME)
         return()
     endif()
     if (CMAKE_CXX_COMPILER_ID MATCHES "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-        target_compile_options(${TARGET_NAME} PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-w>)
+        target_compile_options(${TARGET_NAME} PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-w> $<$<COMPILE_LANGUAGE:C>:-w>)
     elseif (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
-        target_compile_options(${TARGET_NAME} PRIVATE $<$<COMPILE_LANGUAGE:CXX>:/w>)
+        # For Microsoft compilers (MSVC), we must remove existing warning flags 
+        # (e.g., /W1, /W2, /W3, /W4, /Wall) before adding /w. 
+        # This prevents the D9025 warning: "overriding '/Wx' with '/w'".
+        
+        # Retrieve existing compile options
+        get_target_property(COMPILE_OPTIONS ${TARGET_NAME} COMPILE_OPTIONS)
+        if (NOT COMPILE_OPTIONS)
+            set(COMPILE_OPTIONS "")  # Ensure it's defined
+        endif()
+
+        # Remove existing warning level flags (/W1, /W2, /W3, /W4, /Wall)
+        foreach(WARNING_FLAG /W0 /W1 /W2 /W3 /W4 /Wall /WX -Wall)
+            string(REPLACE ${WARNING_FLAG} "" COMPILE_OPTIONS "${COMPILE_OPTIONS}")
+        endforeach()
+
+        # Apply the desired warning flag (e.g., /w to suppress all warnings)
+        set_target_properties(${TARGET_NAME} PROPERTIES COMPILE_OPTIONS "")
+        target_compile_options(${TARGET_NAME} PRIVATE $<$<COMPILE_LANGUAGE:CXX>:${COMPILE_OPTIONS} /w> $<$<COMPILE_LANGUAGE:C>:${COMPILE_OPTIONS} /w>)
     endif ()
 endfunction ()
 

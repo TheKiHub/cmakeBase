@@ -60,6 +60,8 @@ if (IMGUI_ADDED)
             DEPENDENCIES "glfw3"
     )
     message(DEBUG "IMGUI ${HANDLE_EXTERNALS_VERSION} created")
-else ()
+endif()
+
+if(NOT TARGET imGui)
     message(WARNING "IMGUI ${HANDLE_EXTERNALS_VERSION} could not be created")
 endif ()

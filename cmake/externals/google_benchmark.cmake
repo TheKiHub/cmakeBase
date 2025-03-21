@@ -32,7 +32,9 @@ CPMAddPackage(
 if (benchmark_ADDED)
     # patch benchmark target
     add_library(google_benchmark ALIAS benchmark)
-    message(DEBUG "benchmark ${HANDLE_EXTERNALS_VERSION} created")
-else ()
-    message(WARNING "benchmark ${HANDLE_EXTERNALS_VERSION} could not be created")
+    message(DEBUG "google_benchmark ${HANDLE_EXTERNALS_VERSION} created")
+endif()
+
+if(NOT TARGET google_benchmark)
+    message(WARNING "google_benchmark ${HANDLE_EXTERNALS_VERSION} could not be created")
 endif ()

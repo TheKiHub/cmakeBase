@@ -17,6 +17,8 @@ CPMAddPackage(
 
 if (GLFW_ADDED)
     message(DEBUG "GLFW ${HANDLE_EXTERNALS_VERSION} created")
-else ()
+endif()
+
+if(NOT TARGET glfw)
     message(WARNING "GLFW ${HANDLE_EXTERNALS_VERSION} could not be created")
 endif ()

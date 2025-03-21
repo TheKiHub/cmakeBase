@@ -12,11 +12,8 @@ CPMAddPackage(
 )
 
 if (quill_ADDED)
-    # turn off all kinds of warnings by including the quill headers as system headers
-    target_include_directories(quill
-            SYSTEM INTERFACE
-            $<BUILD_INTERFACE:${quill_SOURCE_DIR}/include>
-            $<INSTALL_INTERFACE:include>)
+    # turn off all kinds of warnings by including the headers as system headers
+    include_as_systemheaders(quill)
 
     option(QUILL_REMOVE_LOW_SEVERITY_LOGS_RELEASE_ONLY "Configure Quill to remove log commands with severity lower than 'info' in release mode" ON)
     if(QUILL_REMOVE_LOW_SEVERITY_LOGS_RELEASE_ONLY)
@@ -32,6 +29,8 @@ if (quill_ADDED)
     else ()
         message(DEBUG "quill ${HANDLE_EXTERNALS_VERSION} created")
     endif ()
-else ()
+endif()
+
+if(NOT TARGET quill)
     message(WARNING "quill ${HANDLE_EXTERNALS_VERSION} could not be created")
 endif ()

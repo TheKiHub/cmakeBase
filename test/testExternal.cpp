@@ -15,3 +15,7 @@
 #include "taskflow/taskflow.hpp"
 #include "toml++/toml.h"
 #include "App.h" // uWebSocket
+
+int main() {
+    return 0;
+}

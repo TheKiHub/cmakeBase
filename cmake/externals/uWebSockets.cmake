@@ -16,18 +16,16 @@ if (uSockets_ADDED)
     AUX_SOURCE_DIRECTORY(${CPM_PACKAGE_uSockets_SOURCE_DIR}/src/crypto SOURCES)
     AUX_SOURCE_DIRECTORY(${CPM_PACKAGE_uSockets_SOURCE_DIR}/src/eventing SOURCES)
 
-    add_library(${PROJECT_NAME}
-            ${SOURCES}
-            )
+    add_library(${PROJECT_NAME} ${SOURCES})
 
     # turn off all kinds of warnings
     inhibit_target_warnings(${PROJECT_NAME})
 
     # make the headers system, targets which include it should not get warnings
     target_include_directories(${PROJECT_NAME}
-            SYSTEM PUBLIC
-            $<INSTALL_INTERFACE:include/${PROJECT_NAME}-${PROJECT_VERSION}>
-            $<BUILD_INTERFACE:${CPM_PACKAGE_uSockets_SOURCE_DIR}/src>
+            PUBLIC
+                $<INSTALL_INTERFACE:include/${PROJECT_NAME}-${PROJECT_VERSION}>
+                $<BUILD_INTERFACE:${CPM_PACKAGE_uSockets_SOURCE_DIR}/src>
             )
 
     handleExternals(NAME OpenSSL)
@@ -57,11 +55,8 @@ if (uSockets_ADDED)
 
         ADD_LIBRARY(${PROJECT_NAME} INTERFACE)
 
-        target_link_libraries(${PROJECT_NAME}
-                INTERFACE
-                uSockets)
+        target_link_libraries(${PROJECT_NAME} INTERFACE uSockets)
 
-        #use system to turn off all warnings so we don't get spammed from this external library (mostly c-style warnings)
         target_include_directories(${PROJECT_NAME}
                 SYSTEM INTERFACE
                     $<INSTALL_INTERFACE:include>
@@ -82,6 +77,8 @@ if (uSockets_ADDED)
     else ()
         message(WARNING "uWebSockets ${HANDLE_EXTERNALS_VERSION} could not be created")
     endif ()
-else ()
+endif()
+
+if(NOT TARGET uWebSockets)
     message(WARNING "uSockets ${HANDLE_EXTERNALS_VERSION} could not be created")
 endif ()

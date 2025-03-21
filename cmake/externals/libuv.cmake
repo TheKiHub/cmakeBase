@@ -42,6 +42,7 @@ if(LibUV_FOUND)
         add_library(libuv ALIAS LibUV::LibUV)
         message(STATUS "Using LibUV library installed on this system")
     endif()
+    inhibit_target_warnings(LibUV::LibUV)
 else()
     CPMAddPackage(
             NAME libuv
@@ -52,4 +53,10 @@ else()
     set_target_properties(uv_a PROPERTIES INTERPROCEDURAL_OPTIMIZATION OFF) # don't support it
     set_target_properties(uv PROPERTIES INTERPROCEDURAL_OPTIMIZATION OFF) # don't support it
     add_library(libuv ALIAS uv)
+    inhibit_target_warnings(uv)
+    inhibit_target_warnings(uv_a)
 endif()
+
+if(NOT TARGET libuv)
+    message(WARNING "libuv ${HANDLE_EXTERNALS_VERSION} could not be created")
+endif ()

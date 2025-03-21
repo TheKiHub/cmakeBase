@@ -11,7 +11,10 @@ CPMAddPackage(
 )
 
 if (googletest_ADDED)
+    add_library(googletest ALIAS gtest_main)
     message(DEBUG "googletest ${HANDLE_EXTERNALS_VERSION} created")
-else ()
+endif()
+
+if(NOT TARGET googletest)
     message(WARNING "googletest ${HANDLE_EXTERNALS_VERSION} could not be created")
 endif ()

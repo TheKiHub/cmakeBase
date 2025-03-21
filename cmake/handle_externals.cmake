@@ -13,6 +13,24 @@ set(ALL_EXTERNAL_FILES ${ALL_EXTERNAL_FILES} CACHE INTERNAL "List of external fi
 # Global variable to store information about external dependencies
 set(external_dependency_versions_and_sources "" CACHE INTERNAL "List of dependency and versions")
 
+macro(include_as_systemheaders target)
+    get_target_property(existing_includes ${target} INTERFACE_INCLUDE_DIRECTORIES)
+
+    if (existing_includes)
+        set(filtered_includes "")
+
+        foreach(dir ${existing_includes})
+            if (NOT dir MATCHES "^${CMAKE_SOURCE_DIR}.*")  # Exclude source directory paths
+                list(APPEND filtered_includes ${dir})
+            endif()
+        endforeach()
+
+        if (filtered_includes)
+            target_include_directories(${target} SYSTEM INTERFACE ${filtered_includes})
+        endif()
+    endif()
+endmacro()
+
 function(handleExternals)
     cmake_parse_arguments(HANDLE_EXTERNALS "" "NAME;VERSION" "" ${ARGN})
 

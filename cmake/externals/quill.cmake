@@ -1,7 +1,7 @@
 # https://github.com/odygrd/quill
 # check if special Version is used or set the standard version
 if ("${HANDLE_EXTERNALS_VERSION}" STREQUAL "")
-    set(HANDLE_EXTERNALS_VERSION "8.2.0")
+    set(HANDLE_EXTERNALS_VERSION "9.0.2")
 endif ()
 
 CPMAddPackage(

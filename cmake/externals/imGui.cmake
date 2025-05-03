@@ -1,7 +1,7 @@
 # https://github.com/ocornut/imgui
 # check if special Version is used or set the standard version
 if ("${HANDLE_EXTERNALS_VERSION}" STREQUAL "")
-    set(HANDLE_EXTERNALS_VERSION "1.91.8-docking")
+    set(HANDLE_EXTERNALS_VERSION "1.91.9b-docking")
 endif ()
 
 CPMAddPackage(
@@ -13,7 +13,7 @@ CPMAddPackage(
 
 if (IMGUI_ADDED)
     # ImGui don't support CMake so we create our own target for bedder usage
-    project(imGui VERSION 1.89)
+    project(imGui VERSION 1.91.9)
 
     add_library(${PROJECT_NAME}
             ${IMGUI_SOURCE_DIR}/imgui.cpp

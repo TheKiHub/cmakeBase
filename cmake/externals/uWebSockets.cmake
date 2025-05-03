@@ -1,3 +1,5 @@
+# https://github.com/uNetworking/uWebSockets
+
 if ("${HANDLE_EXTERNALS_VERSION}" STREQUAL "")
     set(HANDLE_EXTERNALS_VERSION "20.74.0")
 endif ()

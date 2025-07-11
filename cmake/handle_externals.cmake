@@ -1,13 +1,13 @@
 # The following block is intended to create the list of external files only once, 
 # avoiding recreating it every time the function is called.
 file(GLOB ALL_EXTERNAL_FILES "${CMAKE_CURRENT_LIST_DIR}/externals/*")
-set(file_list)
+set(ALL_EXTERNAL_NAMES)
 foreach(file ${ALL_EXTERNAL_FILES})
     get_filename_component(filename ${file} NAME_WE)
-    list(APPEND file_list ${filename})
+    list(APPEND ALL_EXTERNAL_NAMES ${filename})
 endforeach()
 # Store the list in the parent scope so it's accessible inside functions
-set(file_list ${file_list} CACHE INTERNAL "List of all external names")
+set(ALL_EXTERNAL_NAMES ${ALL_EXTERNAL_NAMES} CACHE INTERNAL "List of all external names")
 set(ALL_EXTERNAL_FILES ${ALL_EXTERNAL_FILES} CACHE INTERNAL "List of external files")
 
 # Global variable to store information about external dependencies
@@ -69,7 +69,7 @@ function(handleExternals)
         endif()
     endforeach()
 
-    list(FIND file_list ${HANDLE_EXTERNALS_NAME} index)
+    list(FIND ALL_EXTERNAL_NAMES ${HANDLE_EXTERNALS_NAME} index)
     if(index GREATER -1)
         # Store information about the processed external dependency
         list(APPEND external_dependency_versions_and_sources "${HANDLE_EXTERNALS_NAME}_${HANDLE_EXTERNALS_VERSION}_${CMAKE_CURRENT_LIST_FILE}")

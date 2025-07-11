@@ -4,28 +4,35 @@
 # Automatically checks which files and directories exists
 #-------------------------------------------------------------------------------------------------------
 
-if(NOT DEFINED FETCH_PACKAGE_FILES)
-     set(FETCH_PACKAGE_FILES CMakeLists.txt) # fetch requires the root CMakeLists.txt
+set(PACKAGE_SOURCE_DIR ${CMAKE_SOURCE_DIR})
+set(PACKAGE_BINARY_DIR ${CMAKE_BINARY_DIR})
+set(ZIP_OUTPUT ${PACKAGE_BINARY_DIR}/package_files.zip)
 
-     if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
-         set(FETCH_PACKAGE_FILES ${FETCH_PACKAGE_FILES} cmake)
-     endif()
+set(FETCH_PACKAGE_FILES
+    ${PACKAGE_SOURCE_DIR}/CMakeLists.txt
+)
 
-     if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/libs")
-         set(FETCH_PACKAGE_FILES ${FETCH_PACKAGE_FILES} libs)
-     endif()
-
-     if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
-         set(FETCH_PACKAGE_FILES ${FETCH_PACKAGE_FILES} LICENSE)
-     endif()
+if(EXISTS "${PACKAGE_SOURCE_DIR}/cmake")
+    list(APPEND FETCH_PACKAGE_FILES "${PACKAGE_SOURCE_DIR}/cmake")
 endif()
 
-if(NOT FETCH_PACKAGE_FILES)
-    message(WARNING "No files specified for FetchContent package. Please check the FETCH_PACKAGE_FILES variable")
+if(EXISTS "${PACKAGE_SOURCE_DIR}/libs")
+    list(APPEND FETCH_PACKAGE_FILES "${PACKAGE_SOURCE_DIR}/libs")
+endif()
+
+if(EXISTS "${PACKAGE_SOURCE_DIR}/LICENSE")
+    list(APPEND FETCH_PACKAGE_FILES "${PACKAGE_SOURCE_DIR}/LICENSE")
+endif()
+
+if(FETCH_PACKAGE_FILES)
+    add_custom_command(
+        OUTPUT ${ZIP_OUTPUT}
+        COMMAND ${CMAKE_COMMAND} -E tar c ${ZIP_OUTPUT} --format=zip -- ${FETCH_PACKAGE_FILES}
+        WORKING_DIRECTORY ${PACKAGE_SOURCE_DIR}
+        DEPENDS ${FETCH_PACKAGE_FILES}
+    )
+
+    add_custom_target(create_package_files DEPENDS ${ZIP_OUTPUT})
 else()
-    add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/package_files.zip
-            COMMAND ${CMAKE_COMMAND} -E tar c ${CMAKE_CURRENT_BINARY_DIR}/package_files.zip --format=zip -- ${FETCH_PACKAGE_FILES}
-            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-            DEPENDS ${FETCH_PACKAGE_FILES})
-    add_custom_target(create_package_files DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/package_files.zip)
+    message(WARNING "No files specified for FetchContent package. Please check the FETCH_PACKAGE_FILES variable")
 endif()

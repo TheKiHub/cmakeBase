@@ -15,6 +15,15 @@ if (quill_ADDED)
     # turn off all kinds of warnings by including the headers as system headers
     include_as_systemheaders(quill)
 
+    option(QUILL_REMOVE_META_DATA "Configure Quill to remove function meta data and file meta data in release mode" ON)
+    if(QUILL_REMOVE_META_DATA)
+        # we don't use function names in the log, function names needs a special treatment inside a lambda which most forget
+        # also it creates a warning in tidy clang
+        target_compile_options(quill INTERFACE -DQUILL_DISABLE_FUNCTION_NAME)
+        # in a release build we don't want to spam the log and it's not only for developers. File information are not used
+        target_compile_options(quill INTERFACE "$<$<CONFIG:RELEASE>:-DQUILL_DISABLE_FILE_INFO>")
+    endif ()
+
     option(QUILL_REMOVE_LOW_SEVERITY_LOGS_RELEASE_ONLY "Configure Quill to remove log commands with severity lower than 'info' in release mode" ON)
     if(QUILL_REMOVE_LOW_SEVERITY_LOGS_RELEASE_ONLY)
         # Configure Quill to remove log commands with severity lower than "info" in release mode.

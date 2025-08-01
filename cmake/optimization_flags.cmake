@@ -5,7 +5,7 @@
 function(choose_optimization)
     set(CHOSEN_CMAKE_CXX_FLAGS "" CACHE INTERNAL "CHOSEN_CMAKE_CXX_FLAGS")
     if (CMAKE_CXX_COMPILER_ID MATCHES "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-        if (CMAKE_SYSTEM_PROCESSOR MATCHES “BCM28|armv7”)
+        if (CMAKE_SYSTEM_PROCESSOR MATCHES "BCM28|armv7")
             # we are on a raspberry pi like architecture
             set(CHOSEN_CMAKE_CXX_FLAGS "-march=armv8-a+crc -mcpu=cortex-a53 -mfpu=neon-fp-armv8")
         else ()
@@ -109,7 +109,7 @@ endmacro()
 # Checks if neon can be used, this is currently only available for gnu and clang compiler
 #-------------------------------------------------------------------------------------------------------
 macro(_check_neon)
-    if(CMAKE_C_COMPILER_ID STREQUAL GNU OR MAKE_C_COMPILER_ID STREQUAL Clang)
+    if(CMAKE_C_COMPILER_ID STREQUAL GNU OR CMAKE_C_COMPILER_ID STREQUAL Clang)
         include(CheckCSourceCompiles)
         include(CheckIncludeFile)
 

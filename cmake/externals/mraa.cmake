@@ -67,7 +67,7 @@ else()
 
     if (mraa_ADDED)
         set_target_properties(mraa PROPERTIES INTERPROCEDURAL_OPTIMIZATION OFF) # don't support it
-
+        target_compile_options(mraa PRIVATE -fcommon) # fix double version problem on some platforms
         get_property(MRAA_BINARY_DIR TARGET mraa PROPERTY BINARY_DIR)
         string(TOLOWER mraa/version.h VERSION_HEADER_LOCATION)
         packageProject(

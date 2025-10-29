@@ -1,14 +1,13 @@
 # https://github.com/odygrd/quill
 # check if special Version is used or set the standard version
 if ("${HANDLE_EXTERNALS_VERSION}" STREQUAL "")
-    set(HANDLE_EXTERNALS_VERSION "9.0.2")
+    set(HANDLE_EXTERNALS_VERSION "10.2.0")
 endif ()
 
 CPMAddPackage(
         NAME quill
         GITHUB_REPOSITORY odygrd/quill
         VERSION ${HANDLE_EXTERNALS_VERSION}
-        OPTIONS "QUILL_ENABLE_INSTALL ON"
 )
 
 if (quill_ADDED)

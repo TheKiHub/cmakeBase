@@ -15,6 +15,7 @@
 #include "taskflow/taskflow.hpp"
 #include "toml++/toml.h"
 #include "App.h" // uWebSocket
+#include "flatbuffers/flatbuffer_builder.h"
 
 int main() {
     return 0;

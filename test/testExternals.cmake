@@ -88,6 +88,11 @@ if(NOT (TARGET gtest_main AND TARGET gmock))
     message(FATAL_ERROR "External was not created")
 endif()
 
+handleExternals(NAME flatbuffers)
+if(NOT TARGET flatbuffers)
+    message(FATAL_ERROR "External was not created")
+endif()
+
 #-------------------------------------------------------------------------------------------------------
 # create a target which uses all externals to test compilation/linking
 #-------------------------------------------------------------------------------------------------------
@@ -112,6 +117,7 @@ target_link_libraries(testExternal
             uWebSockets
             gtest_main
             gmock
+            flatbuffers
         )
 set_target_cpp_compiler_flags(testExternal)
 set_target_warnings(testExternal)

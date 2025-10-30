@@ -14,7 +14,6 @@ CPMAddPackage(
 )
 
 if (flatbuffers_ADDED)
-    set(${flatbuffers_SOURCE_DIR} ${flatbuffers_SOURCE_DIR} PARENT_SCOPE)
     message(DEBUG "flatbuffers ${HANDLE_EXTERNALS_VERSION} created")
 endif ()
 

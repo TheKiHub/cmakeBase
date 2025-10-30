@@ -11,6 +11,7 @@ CPMAddPackage(
 )
 
 if (EXISTS ${flatcBinary_SOURCE_DIR})
+    set(flatcBinary_SOURCE_DIR ${flatcBinary_SOURCE_DIR} PARENT_SCOPE)
     message(DEBUG "flatcBinary ${HANDLE_EXTERNALS_VERSION} downloaded")
 else ()
     message(WARNING "flatcBinary ${HANDLE_EXTERNALS_VERSION} could not be downloaded")

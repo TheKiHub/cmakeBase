@@ -20,12 +20,6 @@ check_cxx_source_runs("
 " HAVE_CXX_11_REGEX)
 cmake_pop_check_state()
 
-if(CMAKE_INTERPROCEDURAL_OPTIMIZATION)
-    set(BENCHMARK_LTO_STATE "ON")
-else()
-    set(BENCHMARK_LTO_STATE "OFF")
-endif()
-
 
 CPMAddPackage(
         NAME benchmark
@@ -34,7 +28,8 @@ CPMAddPackage(
         OPTIONS
         "BENCHMARK_ENABLE_TESTING OFF"
         "BENCHMARK_INSTALL_DOCS OFF"
-        "BENCHMARK_ENABLE_LTO ${BENCHMARK_LTO_STATE}"
+        # google will just use LLVM/Clang toolchain we use CMake LTO globally and let it set the right flag automatically
+        "BENCHMARK_ENABLE_LTO OFF"
         "HAVE_STD_REGEX ${HAVE_CXX_11_REGEX}"
 )
 

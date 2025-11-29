@@ -28,7 +28,7 @@ CPMAddPackage(
         OPTIONS
         "BENCHMARK_ENABLE_TESTING OFF"
         "BENCHMARK_INSTALL_DOCS OFF"
-        # google will just use LLVM/Clang toolchain we use CMake LTO globally and let it set the right flag automatically
+        #we use CMake LTO globally
         "BENCHMARK_ENABLE_LTO OFF"
         "HAVE_STD_REGEX ${HAVE_CXX_11_REGEX}"
 )

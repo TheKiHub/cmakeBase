@@ -5,33 +5,36 @@ option(IGNORE_SYSTEM_LIBRARY_MRAA "Ignore the system-installed mraa library" OFF
 
 if(NOT IGNORE_SYSTEM_LIBRARY_MRAA)
     find_package(PkgConfig REQUIRED)
-    pkg_check_modules(MRAA REQUIRED mraa)
+    pkg_check_modules(MRAA mraa)
 
-    find_path(Mraa_INCLUDE_DIR
-            NAMES mraa.h
-            PATH ${MRAA_INCLUDE_DIRS}
-            )
+    if(MRAA_PKG_FOUND)
+        find_path(Mraa_INCLUDE_DIR
+                NAMES mraa.h
+                HINTS ${MRAA_PKG_INCLUDE_DIRS}
+        )
 
-    find_library(Mraa_LIBRARY
-            NAMES libmraa.so
-            PATH ${MRAA_LIBRARY_DIRS}
-            )
+        find_library(Mraa_LIBRARY
+                NAMES mraa
+                HINTS ${MRAA_PKG_LIBRARY_DIRS}
+        )
 
-    set(Mraa_VERSION ${MRAA_VERSION})
+        set(Mraa_VERSION ${MRAA_PKG_VERSION})
 
-    mark_as_advanced(Mraa_FOUND Mraa_INCLUDE_DIR Mraa_LIBRARY Mraa_VERSION)
+        mark_as_advanced(Mraa_FOUND Mraa_INCLUDE_DIR Mraa_LIBRARY Mraa_VERSION)
 
-    include(FindPackageHandleStandardArgs)
-    find_package_handle_standard_args(Mraa
-            REQUIRED Mraa_INCLUDE_DIR
-            REQUIRED Mraa_LIBRARY
-            VERSION_VAR Mraa_VERSION
-            )
+        include(FindPackageHandleStandardArgs)
+
+        # This will set Mraa_FOUND to TRUE only if INCLUDE_DIR and LIBRARY are valid
+        find_package_handle_standard_args(Mraa
+                REQUIRED_VARS Mraa_INCLUDE_DIR Mraa_LIBRARY
+                VERSION_VAR Mraa_VERSION
+        )
+    endif()
 endif ()
 
 if (Mraa_FOUND)
-    set(Mraa_INCLUDE_DIRS {Mraa_INCLUDE_DIR})
-    set(Mraa_LIBRARIES {Mraa_LIBRARY})
+    set(Mraa_INCLUDE_DIRS ${Mraa_INCLUDE_DIR})
+    set(Mraa_LIBRARIES ${Mraa_LIBRARY})
     if (NOT TARGET mraa::mraa)
         add_library(mraa::mraa UNKNOWN IMPORTED)
         set_target_properties(mraa::mraa PROPERTIES
@@ -47,9 +50,16 @@ else()
         set(HANDLE_EXTERNALS_VERSION "2.2.0")
     endif ()
 
-    set(CMAKE_POLICY_BUFFER ${CMAKE_POLICY_DEFAULT_CMP0048})
-    set(CMAKE_POLICY_DEFAULT_CMP0048 NEW) # deactivate PROJECT_VERSION warnings
-    set(CMAKE_MESSAGE_LOG_LEVEL "ERROR")    # deactivate the stupid git warning message
+    # --- SAVE STATE ---
+    set(CMP0048_BUFFER ${CMAKE_POLICY_DEFAULT_CMP0048})
+    set(WARN_DEPRECATED_BUFFER ${CMAKE_WARN_DEPRECATED})
+    set(LOG_LEVEL_BUFFER ${CMAKE_MESSAGE_LOG_LEVEL})
+
+    # --- SUPPRESS WARNINGS ---
+    set(CMAKE_POLICY_DEFAULT_CMP0048 NEW) # Fixes project() version warning
+    set(CMAKE_WARN_DEPRECATED OFF)        # Fixes cmake_minimum_required warning
+    set(CMAKE_MESSAGE_LOG_LEVEL "ERROR")  # Fixes git clone spam
+
     CPMAddPackage(
             NAME mraa
             GITHUB_REPOSITORY eclipse/mraa
@@ -62,13 +72,19 @@ else()
             "BUILDTESTS OFF"
             "ENABLEEXAMPLES OFF"
     )
-    set(CMAKE_MESSAGE_LOG_LEVEL "STATUS")
-    set(CMAKE_POLICY_DEFAULT_CMP0048 ${CMAKE_POLICY_BUFFER}) # revert the policy change
+
+    # --- RESTORE STATE ---
+    set(CMAKE_MESSAGE_LOG_LEVEL ${LOG_LEVEL_BUFFER})
+    set(CMAKE_POLICY_DEFAULT_CMP0048 ${CMP0048_BUFFER})
+    set(CMAKE_WARN_DEPRECATED ${WARN_DEPRECATED_BUFFER})
 
     if (mraa_ADDED)
         set_target_properties(mraa PROPERTIES INTERPROCEDURAL_OPTIMIZATION OFF) # don't support it
         target_compile_options(mraa PRIVATE -fcommon) # fix double version problem on some platforms
+
+        target_include_directories(mraa PUBLIC $<BUILD_INTERFACE:${mraa_SOURCE_DIR}/api>)
         get_property(MRAA_BINARY_DIR TARGET mraa PROPERTY BINARY_DIR)
+
         string(TOLOWER mraa/version.h VERSION_HEADER_LOCATION)
         packageProject(
                 NAME mraa

@@ -20,6 +20,8 @@ if(NOT ZLIB_FOUND)
             NAME zlib
             GITHUB_REPOSITORY madler/zlib
             VERSION ${HANDLE_EXTERNALS_VERSION}
+            OPTIONS
+            "ZLIB_BUILD_TESTING Off"
     )
     set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ${buffer})
     unset(buffer)
